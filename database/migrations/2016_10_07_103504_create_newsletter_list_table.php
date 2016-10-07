@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriberTable extends Migration
+class CreateNewsletterListTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateSubscriberTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscribers', function (Blueprint $table) {
+        Schema::create('newsletter_lists', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('slug', 55)->unique();
             $table->string('name', 50);
-            $table->string('email', 100)->unique();
-            $table->enum('status', ['pending', 'subscribed', 'unsubscribed'])->default('unsubscribed');
+            $table->tiniText('description');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateSubscriberTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscribers');
+        Schema::dropIfExists('newsletter_lists');
     }
 }

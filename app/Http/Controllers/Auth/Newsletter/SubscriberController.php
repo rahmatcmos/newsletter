@@ -12,7 +12,13 @@ class SubscriberController extends Controller
     	$subscribers = Subscriber::orderBy('name')
     		->paginate(20);
 
-    	return view('content.admin.newsletter.subscriber.index', compact('subscribers'))
+    	$labels = [
+    		'Pending' => 'warning',
+    		'Subscribed' => 'success',
+    		'Unsubscribed' => 'danger'
+    	];
+
+    	return view('auth.newsletter.subscriber.index', compact('subscribers', 'labels'))
     		->withTitle(sprintf('Subscribers (%d)', $subscribers->total()));
     }
 }

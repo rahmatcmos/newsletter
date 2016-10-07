@@ -14,6 +14,8 @@
     <link href="/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 
+    @stack('css')
+
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -51,13 +53,13 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="">Home</a></li>
-                            <li><a href="">About</a></li>
+                            <li><a href="{{ route('index') }}">Home</a></li>
+                            <li><a href="{{ route('about') }}">About</a></li>
                             <li><a href="{{ route('newsletter.index') }}">Newsletter</a></li>
                             <li><a href="{{ url('/login') }}">Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
-                            <li><a href="">Subscribers</a></li>
+                            <li><a href="{{ route('admin.subscriber') }}">Subscribers</a></li>
                             <li><a href="">Newsletters</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

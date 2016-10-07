@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Subscriber;
 use App\Http\Requests\Newsletter\SubscribeRequest;
 use App\Mail\Newsletter\SubscribeMail;
+use App\Mail\Newsletter\SubscribeConfirmMail;
 
 class NewsletterController extends Controller
 {
@@ -20,7 +21,7 @@ class NewsletterController extends Controller
     		// save to database
 	    	$subscriber = Subscriber::FirstOrNew(['email' => $request->email]);
 	    	$subscriber->name = $request->name;
-	    	$subscriber->status = 'unsubscribed';
+	    	$subscriber->status = 'pending';
 	    	$subscriber->save();
 
 	    	// send email confirmation
@@ -34,8 +35,8 @@ class NewsletterController extends Controller
 
     public function getConfirm()
     {
-        $email = \Crypt::decrypt(request('email'));
-        abort_if(empty($email), 404, 'Email address not found.');
+        $email = \Crypt::decrypt(request('key'));
+        // abort_if(empty($email), 404, 'Email address not found.');
 
         // find email
         $subscriber = Subscriber::whereEmail($email)->first();
@@ -45,8 +46,11 @@ class NewsletterController extends Controller
                 ->with('error', 'Invalid email address.');
         }
 
-        $subscriber->status = 'subscribe';
+        $subscriber->status = 'subscribed';
         $subscriber->save();
+
+        // send email notification
+        \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeConfirmMail($subscriber));
 
         return redirect()
             ->route('newsletter.index')

@@ -30,7 +30,7 @@
                             <td><input type="checkbox" value="{{ $subscriber->id }}"></td>
                     		<td>{{ $subscriber->name }}</td>
                     		<td>{{ $subscriber->email }}</td>
-                    		<td><span class="label label-{{ $subscriber->status === 'Subscribed' ? 'success' : 'danger' }}">{{ $subscriber->status }}</span></td>
+                    		<td><span class="label label-{{ $labels[$subscriber->status] }}">{{ $subscriber->status }}</span></td>
                     		<td>
                                 <a href="" class="btn btn-default"><i class="fa fa-pencil"></i></a>
                     			<a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
