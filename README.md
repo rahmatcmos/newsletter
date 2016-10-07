@@ -17,7 +17,9 @@ Simple newsletter app using Laravel framework.
 # Instalasi
 
 - Clone repositori untuk mendapatkan update terbaru.
+- Ubah hak akses direktori ```storage``` dan ```bootstrap/cache``` agar dapat ditulisi oleh aplikasi.
 - Jalankan perintah ```composer update``` untuk memperbarui package dan framework.
 - Salin berkas ```.env.example``` menjadi ```.env``` dan ubah beberapa pengaturan di dalamnya sesuai dengan mesin yang digunakan.
+- Jalankan perintah ```php artisan key:generate``` untuk membuat key baru.
 - Jalankan built-in server dengan perintah ```php artisan serve``` atau ```php -S localhost:8000```.
 - Akses URL ```localhost:8000``` melalui peramban.
