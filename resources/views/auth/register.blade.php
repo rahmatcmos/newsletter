@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
                 <div class="panel-body">
-                    <form role="form" method="POST" action="{{ url('/register') }}">
+                    <form role="form" method="POST" action="{{ url('/register') }}" data-toggle="validator">
                         {{ csrf_field() }}
                         {{ method_field('post') }}
 
@@ -71,3 +71,7 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('component/bootstrap-validator/dist/validator.min.js') }}"></script>
+@endpush

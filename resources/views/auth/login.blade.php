@@ -7,13 +7,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
-                    <form role="form" method="POST" action="{{ url('/login') }}">
+                    <form role="form" method="POST" action="{{ url('/login') }}" data-toggle="validator">
                         {{ csrf_field() }}
                         {{ method_field('post') }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="control-label">E-Mail Address</label>
-                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
+                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                             @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
@@ -23,7 +23,7 @@
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="control-label">Password</label>
-                            <input id="password" type="password" class="form-control" name="password">
+                            <input id="password" type="password" class="form-control" name="password" required>
                             @if ($errors->has('password'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('password') }}</strong>
@@ -55,3 +55,7 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('component/bootstrap-validator/dist/validator.min.js') }}"></script>
+@endpush
