@@ -39,7 +39,7 @@ Data yang otomatis dibuat adalah:
 - Default list
 - Data subscriber
 - User
-- Unsubscribe Reason
+- Unsubscribe reason
 - Newsletter template
 
-Default login ke aplikasi dapat menggunakan username ```admin@mail.com`` dan password ```admin```
+Default login ke aplikasi dapat menggunakan username ```admin@mail.com``` dan password ```admin```
