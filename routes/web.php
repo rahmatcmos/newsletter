@@ -27,7 +27,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'], function(){
-	Route::group(['prefix' => 'newsletter', 'namespace' => 'Newsletter'], function(){\
+	Route::group(['prefix' => 'newsletter', 'namespace' => 'Newsletter'], function(){
 		// subscriber
 		Route::get('subscribers/{list?}', 'SubscriberController@getIndex')->name('admin.subscriber');
 		Route::get('subscriber/create', 'SubscriberController@getCreate')->name('admin.subscriber.create');
