@@ -60,7 +60,7 @@
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="{{ route('admin.list.index') }}">Lists</a></li>
+                            <li><a href="{{ route('admin.list') }}">Lists</a></li>
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Subscribers <span class="caret"></span>
@@ -70,7 +70,7 @@
                                     <li><a href="{{ route('admin.subscriber.create') }}">Create New Subscriber</a></li>
                                 </ul>
                             </li>
-                            <li><a href="">Newsletters</a></li>
+                            <li><a href="{{ route('admin.newsletter') }}">Newsletters</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>

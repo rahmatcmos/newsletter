@@ -12,4 +12,9 @@ class NewsletterList extends Model
 	 * @var string
 	 */
     protected $table = 'newsletter_lists';
+
+    public function subscribers()
+    {
+    	return $this->hasMany(Subscriber::class, 'newsletter_list_id');
+    }
 }

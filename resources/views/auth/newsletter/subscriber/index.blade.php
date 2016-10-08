@@ -18,9 +18,7 @@
                     <a href="" class="btn btn-default"> <i class="fa fa-file-excel-o"></i> Export</a>
                     <a href="" class="btn btn-default"> <i class="fa fa-file-excel-o"></i> Import</a>
                     <a href="" class="btn btn-danger truncate"> <i class="fa fa-trash"></i> Truncate</a>
-
                     <hr>
-
                             
                     <form action="{{ url()->current() }}" method="get" role="form">
                         <div class="input-group">
@@ -35,6 +33,7 @@
                     <table class="table table-border">
                     	<thead>
                             <th><input type="checkbox"></th>
+                            <th>List</th>
                     		<th>Name</th>
                     		<th>Email</th>
                     		<th>Status</th>
@@ -44,6 +43,7 @@
                     	@foreach ($subscribers as $subscriber)
                     	<tr class="{{ $subscriber->status === 'unsubscribed' ? 'text-muted' : '' }}">
                             <td><input type="checkbox" value="{{ $subscriber->id }}"></td>
+                            <td>{{ $subscriber->list->name }}</td>
                     		<td>{{ $subscriber->name }}</td>
                     		<td>{{ $subscriber->email }}</td>
                     		<td><span class="label label-{{ $labels[$subscriber->status] }}">{{ $subscriber->status }}</span></td>
@@ -111,30 +111,36 @@
     </div>
 </div>
 
-<div id="createModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="create-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Create New Subscriber</h4>
             </div>
             <form action="{{ route('admin.subscriber.create.post') }}" method="post" role="form" id="create-subscriber">
             {{ csrf_field() }}
             {{ method_field('post') }}
                 <div class="modal-body">
+                    <div class="validations"></div>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" class="form-control">
+                        <input type="text" name="name" id="name" class="form-control">
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control">
+                        <input type="email" name="email" id="email" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="list" class="control-label">List</label>
+                        <select name="list" id="list" class="form-control"></select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary delete"> <i class="fa fa-save"></i> Create Subscriber</button>
+                    <i class="fa fa-spinner fa-spin fa-fw loader"></i>
+                    <button type="button" class="btn btn-default dismiss" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary create"> <i class="fa fa-save"></i> Create Subscriber</button>
                 </div>
             </form>
         </div>
@@ -145,6 +151,8 @@
 @push('script')
 <script>
     $(function(){
+        $('.loader').hide()
+
         // delete all data
         $('a.truncate').click(function(){
             $('#truncateModal').modal()
@@ -164,8 +172,40 @@
         })
 
         $('a.create').click(function(){
-            $('#createModal').modal()
+            $('#create-modal').modal()
             return false
+        })
+
+        $('#create-modal').on('show.modal.bs', function(){
+            $('.validations').empty().hide()
+            $('#name, #email').empty()
+
+            // request list
+            $.get('{{ route('admin.list') }}', {}, function(response){
+                if (response.isSuccess == true) {
+                    $('#list').empty()
+                    $.each(response.content, function(i, obj){
+                        $('#list').append($('<option>').text(obj.name).attr('value', obj.id));
+                });
+                }
+            })
+        })
+
+        $('#create-subscriber').submit(function(){
+            $('.loader').show()
+            $('button.create, button.dismiss').attr('disabled', true)
+
+            $.post($(this).attr('action'), $(this).serialize(), function(response, status, xhr){
+                if (response.isSuccess) {
+                    $('.validations').addClass('alert alert-success').text(response.message).fadeIn()
+                    $('#name, #email').val('')
+                }
+
+                // manipulate element
+                $('.loader').hide()
+                $('button.create, button.dismiss').attr('disabled', false)
+            })
+            return false;
         })
     })
 </script>

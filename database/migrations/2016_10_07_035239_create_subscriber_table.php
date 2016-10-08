@@ -13,8 +13,9 @@ class CreateSubscriberTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscribers', function (Blueprint $table) {
+        Schema::create('newsletter_subscribers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('newsletter_list_id');
             $table->string('name', 50);
             $table->string('email', 100)->unique();
             $table->enum('status', ['pending', 'subscribed', 'unsubscribed'])->default('unsubscribed');
@@ -29,6 +30,6 @@ class CreateSubscriberTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subscribers');
+        Schema::dropIfExists('newsletter_subscribers');
     }
 }

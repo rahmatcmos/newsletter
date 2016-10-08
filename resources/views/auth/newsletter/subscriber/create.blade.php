@@ -23,7 +23,11 @@
                         </div>
                         <div class="form-group {{ $errors->has('list') ? 'has-error' : '' }}">
                             <label for="list" class="control-label">List</label>
-                            <input type="type" name="list" value="{{ old('list') }}" class="form-control">
+                            <select name="list" id="list" class="form-control">
+                                @foreach ($lists as $list)
+                                    <option value="{{ $list->id }}">{{ $list->name }}</option>
+                                @endforeach
+                            </select>
                             <span class="help-block">{{ $errors->first('list') }}</span>
                         </div>
 

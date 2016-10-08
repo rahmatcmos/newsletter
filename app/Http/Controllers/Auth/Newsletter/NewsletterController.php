@@ -13,9 +13,9 @@ class NewsletterController extends Controller
 {
     public function getIndex()
     {
-    	$newsletters = Newsletter::orderBy('name')
-    		->paginate(20);
+    	// $newsletters = Newsletter::orderBy('name')
+    	// 	->paginate(20);
     		
-    	return view('content.admin.newsletter.index', compact('newsletters'));
+    	return view('auth.newsletter.newsletter.index', compact('newsletters'));
     }
 }

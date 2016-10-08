@@ -18,8 +18,13 @@ class NewsletterController extends Controller
     public function postSubscribe(SubscribeRequest $request)
     {
     	\DB::transaction(function() use($request){
+            // get default list
+            $list = \App\NewsletterList::whereIsDefault(true)->first();
+            abort_if(empty($list), 404, 'No default list defined.');
+
     		// save to database
 	    	$subscriber = Subscriber::FirstOrNew(['email' => $request->email]);
+            $subscriber->newsletter_list_id = $list->id;
 	    	$subscriber->name = $request->name;
 	    	$subscriber->status = 'pending';
 	    	$subscriber->save();
@@ -36,7 +41,7 @@ class NewsletterController extends Controller
     public function getConfirm()
     {
         $email = \Crypt::decrypt(request('key'));
-        // abort_if(empty($email), 404, 'Email address not found.');
+        abort_if(empty($email), 404, 'Email address not found.');
 
         // find email
         $subscriber = Subscriber::whereEmail($email)->first();
