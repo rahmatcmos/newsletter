@@ -1,7 +1,7 @@
 # Newsletter
 Simple newsletter app using Laravel framework.
 
-# Kebutuhan Sistem
+## Kebutuhan Sistem
 
 - PHP >= 5.6.4
 - OpenSSL PHP Extension
@@ -10,11 +10,12 @@ Simple newsletter app using Laravel framework.
 - Tokenizer PHP Extension
 - XML PHP Extension
 
-# Kebutuhan Lain
+## Kebutuhan Lain
 
 - Supervisor untuk menajalankan Queue Laravel
+- ElasticSearch untuk Laravel Scout
 
-# Instalasi
+## Instalasi
 
 - Clone repositori untuk mendapatkan update terbaru.
 - Ubah hak akses direktori ```storage``` dan ```bootstrap/cache``` agar dapat ditulisi oleh aplikasi.
