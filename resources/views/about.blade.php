@@ -15,3 +15,13 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+    <script>
+        $(function(){
+            $('.panel-body > p> img')
+                .addClass('img-reponsive')
+                .attr('width', '100%')
+        })
+    </script>
+@endpush
