@@ -39,7 +39,7 @@
                                     <td>{{ $user->created_at->format('d.m.Y H.i') }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
-                                        <a href="{{ route('admin.user.delete', $user->id) }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                        <a href="{{ route('admin.user.delete', $user->id) }}" class="btn btn-danger {{ auth()->user()->id == $user->id ? 'disabled' : '' }}"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
