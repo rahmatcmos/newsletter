@@ -70,10 +70,20 @@
                                     <li><a href="{{ route('admin.subscriber.create') }}">Create New Subscriber</a></li>
                                 </ul>
                             </li>
-                            <li><a href="{{ route('admin.newsletter') }}">Newsletters</a></li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Newsletters <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="">Create &amp; Send Newsletters</a></li>
+                                    <li><a href="">Newsletter Lists</a></li>
+                                    <li><a href="">Unsubscribe Reason</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="">Settings</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                   <i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">

@@ -61,4 +61,10 @@ class NewsletterController extends Controller
             ->route('newsletter.index')
             ->with('success', 'You has been subscribed newsletter.');
     }
+
+    public function getUnsubscribe()
+    {
+        return view('newsletter.unsubscribe')
+            ->withTitle('Unsubscribe Newsletter');
+    }
 }

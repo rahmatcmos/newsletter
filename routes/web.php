@@ -47,4 +47,6 @@ Route::group(['prefix' => 'newsletter'], function(){
 	Route::get('/', 'NewsletterController@getIndex')->name('newsletter.index');
 	Route::post('subscribe', 'NewsletterController@postSubscribe')->name('newsletter.subscribe');
 	Route::get('confirm', 'NewsletterController@getConfirm')->name('newsletter.confirm');
+	Route::get('unsubscribe', 'NewsletterController@getUnsubscribe')->name('newsletter.unsubscribe');
+	Route::post('unsubscribe', 'NewsletterController@postReason')->name('newsletter.reason.post');
 });
