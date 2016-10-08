@@ -23,7 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $about = \Markdown::convertToHtml(\File::get('../README.md'));
+        return view('home', compact('about'));
     }
 
     public function getAbout()
