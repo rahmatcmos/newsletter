@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\Auth\Newsletter;
-
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use App\NewsletterList;
 
 class ListController extends Controller
 {
     public function getIndex()
     {
-    	# code...
+    	$lists = NewsletterList::orderBy('name', 'ASC')
+    		->get();
+    	return view('auth.newsletter.list.index', compact('lists'))
+    		->withTitle('Lists');
     }
 }

@@ -17,7 +17,8 @@ class CreateNewsletterListTable extends Migration
             $table->increments('id');
             $table->string('slug', 55)->unique();
             $table->string('name', 50);
-            $table->tiniText('description');
+            $table->text('description');
+            $table->boolean('is_default');
             $table->timestamps();
         });
     }

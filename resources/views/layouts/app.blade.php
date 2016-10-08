@@ -60,7 +60,7 @@
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="">Lists</a></li>
+                            <li><a href="{{ route('admin.list.index') }}">Lists</a></li>
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     Subscribers <span class="caret"></span>

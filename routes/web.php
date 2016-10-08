@@ -27,11 +27,15 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function(){
-	Route::group(['prefix' => 'newsletter', 'namespace' => 'Newsletter'], function(){
+	Route::group(['prefix' => 'newsletter', 'namespace' => 'Newsletter'], function(){\
+		// subscriber
 		Route::get('subscribers', 'SubscriberController@getIndex')->name('admin.subscriber');
 		Route::get('subscriber/create', 'SubscriberController@getCreate')->name('admin.subscriber.create');
 		Route::post('subscriber/create', 'SubscriberController@postCreate')->name('admin.subscriber.create.post');
 		Route::get('subscriber/delete/{id}', 'SubscriberController@getDelete')->name('admin.subscriber.delete');
+
+		// lists
+		Route::get('lists', 'ListController@getIndex')->name('admin.list.index');
 	});
 });
 

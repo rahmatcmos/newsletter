@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 
 use Carbon\Carbon;
+use App\Subscriber;
 
 class SubscriberTableSeeder extends Seeder
 {
@@ -13,9 +14,10 @@ class SubscriberTableSeeder extends Seeder
      */
     public function run()
     {
+        $subscriber = new Subscriber;
         $faker = Faker\Factory::create('id_ID');
         foreach (range(1, 100) as $index) {
-        	DB::table('subscribers')->insert([
+        	DB::table($subscriber->getTable())->insert([
         		'name' => $faker->name,
         		'email' => $faker->email,
         		'status' => 'subscribed',
