@@ -59,7 +59,17 @@
                             <li><a href="{{ url('/login') }}">Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
-                            <li><a href="{{ route('admin.subscriber') }}">Subscribers</a></li>
+                            <li><a href="{{ route('home') }}">Home</a></li>
+                            <li><a href="">Lists</a></li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Subscribers <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ route('admin.subscriber') }}">Subscriber List</a></li>
+                                    <li><a href="{{ route('admin.subscriber.create') }}">Create New Subscriber</a></li>
+                                </ul>
+                            </li>
                             <li><a href="">Newsletters</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -93,5 +103,7 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+    @stack('js')
+    @stack('script')
 </body>
 </html>

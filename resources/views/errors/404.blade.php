@@ -9,9 +9,9 @@
 
                 <div class="panel-body text-center">
                 	<h1>{{ $exception->getStatusCode() }}</h1>
-                	<p>Ooop! There is something error with application.</p>
+                	<p>Ooop! {{ $exception->getMessage() }}</p>
                 	<p>
-                		<a href="" class="btn btn-primary">Back to Home</a>
+                		<a href="{{ route('home') }}" class="btn btn-primary">Back to Home</a>
                 	</p>
                 </div>
             </div>

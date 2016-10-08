@@ -8,10 +8,12 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    <p>Halo, {{ auth()->user()->name }}!</p>
-                    <p>Selamat datang di aplikasi manajemen nawala berbasis Laravel.</p>
+                    {!! $about !!}
 
-                    <p><a href="https://www.github.com/arvernester/newsletter" class="btn btn-primary">Github</a></p>
+                    <p>
+                        <a href="https://github.com/arvernester/newsletter" class="btn btn-primary">View on Github</a>
+                        <a href="https://laravel.web.id" class="btn btn-default">Visit Website</a>
+                    </p>
                 </div>
             </div>
         </div>
