@@ -168,6 +168,7 @@ return [
          */
 
         'GrahamCampbell\Markdown\MarkdownServiceProvider',
+        Laravel\Scout\ScoutServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f1e36fbd818bd75cdb21d1b0c6ed24d1",
-    "content-hash": "f473f9ac2757ed6516a9990d05ac430b",
+    "hash": "2f640e80837e8e2242660f8a61457b76",
+    "content-hash": "656417da68929934481b044896a03bd6",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -495,6 +495,69 @@
                 "laravel"
             ],
             "time": "2016-10-06 18:06:32"
+        },
+        {
+            "name": "laravel/scout",
+            "version": "v1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/scout.git",
+                "reference": "e0eff31c5443a83c8e5ae3778cb67297970c0ae8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/e0eff31c5443a83c8e5ae3778cb67297970c0ae8",
+                "reference": "e0eff31c5443a83c8e5ae3778cb67297970c0ae8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/bus": "~5.3",
+                "illuminate/contracts": "~5.3",
+                "illuminate/database": "~5.3",
+                "illuminate/pagination": "~5.3",
+                "illuminate/queue": "~5.3",
+                "illuminate/support": "~5.3",
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "algolia/algoliasearch-client-php": "^1.10",
+                "elasticsearch/elasticsearch": "^2.2",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~5.0"
+            },
+            "suggest": {
+                "algolia/algoliasearch-client-php": "Required to use the Algolia engine (^1.10).",
+                "elasticsearch/elasticsearch": "Required to use the Elasticsearch engine (^2.2)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Scout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Scout provides a driver based solution to searching your Eloquent models.",
+            "keywords": [
+                "algolia",
+                "elasticsearch",
+                "laravel",
+                "search"
+            ],
+            "time": "2016-10-05 15:30:00"
         },
         {
             "name": "league/commonmark",
