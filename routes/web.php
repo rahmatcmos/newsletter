@@ -43,6 +43,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
 
 		// unsubscribe reasons
 		Route::get('reasons', 'ReasonController@getIndex')->name('admin.reason');
+		Route::get('reason/detail/{id}', 'ReasonController@getDetail')->name('admin.reason.detail');
+		Route::post('reason/create', 'ReasonController@postCreate')->name('admin.reason.create.post');
+		Route::post('reason/edit', 'ReasonController@postEdit')->name('admin.reason.edit.post');
+		Route::get('reason/delete/{id}', 'ReasonController@getDelete')->name('admin.reason.delete');
 	});
 
 	Route::group(['namespace' => 'User', 'prefix' => 'user'], function(){

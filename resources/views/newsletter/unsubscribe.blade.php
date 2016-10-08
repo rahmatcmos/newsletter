@@ -8,32 +8,25 @@
                 <div class="panel-heading">{{ $title or config('app.name') }}</div>
 
                 <div class="panel-body">
-                    <p>You are successfully unsubscribed our newsletter. We sad to hear that. If you have time, glad to you give some reason why you leave us.</p>
+                    <div class="alert alert-success">You are successfully unsubscribed our newsletter. </div>
+                    <p>We sad to hear that. If you have time, glad to you give some reason why you leave us.</p>
 
                     <form action="{{ route('newsletter.reason.post') }}">
+                        @foreach ($reasons as $reason)
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="reason" id="reason-{{ $reason->id }}" value="{{ $reason->description }}"> {{ $reason->description }}
+                                </label>
+                            </div>
+                        @endforeach
                         <div class="radio">
                             <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> This newsletter is spammy
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> I'm not interested anymore with this (and related) product
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> I don't know
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3"> Other &mdash; Please provide reason below</small>
+                                <input type="radio" name="reason" id="reason-other" value="other"> Other &mdash; Please provide reason below</small>
                             </label>
                         </div>
 
                         <div class="form-group">
-                            <textarea name="reason" id="reason"  rows="5" class="form-control"></textarea>
+                            <textarea name="reason_text" id="reason"  rows="5" class="form-control"></textarea>
                         </div>
 
                         <div class="form-group">

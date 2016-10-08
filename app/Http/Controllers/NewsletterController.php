@@ -62,9 +62,14 @@ class NewsletterController extends Controller
             ->with('success', 'You has been subscribed newsletter.');
     }
 
+    /**
+     * Show dissapointed text and reason form
+     * @return void
+     */
     public function getUnsubscribe()
     {
-        return view('newsletter.unsubscribe')
+        $reasons = \App\NewsletterReason::all();
+        return view('newsletter.unsubscribe', compact('reasons'))
             ->withTitle('Unsubscribe Newsletter');
     }
 }
