@@ -19,6 +19,19 @@
                     <a href="" class="btn btn-default"> <i class="fa fa-file-excel-o"></i> Import</a>
                     <a href="" class="btn btn-danger truncate"> <i class="fa fa-trash"></i> Truncate</a>
 
+                    <hr>
+
+                            
+                    <form action="{{ url()->current() }}" method="get" role="form">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon3">Search for:</span>
+                            <input type="text" class="form-control" name="query" value="{{ request('query') }}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </span>
+                        </div>
+                    </form>
+    
                     <table class="table table-border">
                     	<thead>
                             <th><input type="checkbox"></th>
@@ -35,15 +48,20 @@
                     		<td>{{ $subscriber->email }}</td>
                     		<td><span class="label label-{{ $labels[$subscriber->status] }}">{{ $subscriber->status }}</span></td>
                             <td>{{ $subscriber->created_at->format('d.m.Y H.i') }}</td>
-                    		<td>
-                                <a href="" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-                    			<a href="{{ route('admin.subscriber.delete', $subscriber->id) }}" class="btn btn-danger delete"><i class="fa fa-trash"></i></a>
+                    		<td class="text-right">
+                                <a href="" class="btn btn-default" title="Send newsletter"><i class="fa fa-envelope"></i></a>
+                                <a href="" class="btn btn-default" title="Edit current subscriber"><i class="fa fa-pencil"></i></a>
+                    			<a href="{{ route('admin.subscriber.delete', $subscriber->id) }}" class="btn btn-danger delete" title="Delete current subscriber"><i class="fa fa-trash"></i></a>
                     		</td>
                     	</tr>
                     	@endforeach
                     </table>
 
-                    {{ $subscribers->links() }}
+                    {{ $subscribers->appends([
+                        'query' => request('query'),
+                        'by' => request('by'),
+                        'column' => request('column')
+                    ])->links() }}
                 </div>
             </div>
         </div>

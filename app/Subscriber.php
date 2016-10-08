@@ -42,4 +42,28 @@ class Subscriber extends Model
     {
         return $this->toArray();
     }
+
+    public function scopeFilter($query)
+    {
+        if (! empty(request('query'))) {
+            $query->where('name', 'LIKE', '%'.request('query').'%')
+                ->orWhere('email', 'LIKE', '%'.request('query').'%')
+                ->orWhere('status', request('query'));
+        }
+    }
+
+    /**
+     * Shorting options
+     * 
+     * @param  object $query
+     * @return object    
+     */
+    public function scopeSort($query)
+    {
+        if (! empty('by')) {
+            $by = in_array(request('by'), ['ASC', 'DESC']) ? request('by') : 'ASC';
+            $column = in_array(request('column', 'name'), ['name', 'status', 'email']) ? request('column') : 'name';
+            return $query->orderBy($column, $by);
+        }
+    }
 }
