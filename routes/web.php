@@ -26,7 +26,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function(){
+Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'newsletter', 'namespace' => 'Newsletter'], function(){\
 		// subscriber
 		Route::get('subscribers/{list?}', 'SubscriberController@getIndex')->name('admin.subscriber');
@@ -43,6 +43,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function(){
 
 		// unsubscribe reasons
 		Route::get('reasons', 'ReasonController@getIndex')->name('admin.reason');
+	});
+
+	Route::group(['namespace' => 'User', 'prefix' => 'user'], function(){
+		Route::get('/', 'UserController@getIndex')->name('admin.user');
+		Route::get('edit/{id}', 'UserController@getEdit')->name('admin.user.edit');
+		Route::get('delete/{id}', 'UserController@getDelete')->name('admin.user.delete');
 	});
 });
 
