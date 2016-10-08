@@ -62,7 +62,7 @@ class Subscriber extends Model
     {
         if (! empty('by')) {
             $by = in_array(request('by'), ['ASC', 'DESC']) ? request('by') : 'ASC';
-            $column = in_array(request('column', 'name'), ['name', 'status', 'email']) ? request('column') : 'name';
+            $column = in_array(request('column'), ['name', 'status', 'email']) ? request('column') : 'name';
             return $query->orderBy($column, $by);
         }
     }

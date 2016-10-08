@@ -11,7 +11,8 @@ class SubscriberController extends Controller
 {
     public function getIndex()
     {
-    	$subscribers = Subscriber::filter()
+    	$subscribers = Subscriber::select('name', 'email', 'created_at', 'status')
+            ->filter()
             ->sort()
     		->paginate(20);
 
