@@ -77,7 +77,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="">Create &amp; Send Newsletters</a></li>
                                     <li><a href="">Newsletter Lists</a></li>
-                                    <li><a href="">Unsubscribe Reason</a></li>
+                                    <li><a href="">Templates</a></li>
+                                    <li><a href="{{ route('admin.reason') }}">Unsubscribe Reason</a></li>
                                 </ul>
                             </li>
                             <li><a href="">Settings</a></li>
