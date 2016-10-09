@@ -18,7 +18,7 @@ class NewsletterController extends Controller
 	 */
     public function getIndex()
     {
-    	$newsletters = Newsletter::orderBy('name')
+    	$newsletters = Newsletter::orderBy('title', 'ASC')
     		->paginate(20);
     		
     	return view('auth.newsletter.newsletter.index', compact('newsletters'));
@@ -37,17 +37,17 @@ class NewsletterController extends Controller
     	if (request()->ajax()) {
     		return [
     			'isSuccess' => true,
-    			'content' => $newsletter->map(function($newsletter){
-    				'id' => $newsletter->id,
-    				'title' => $newsletter->title,
-    				'content' => $newsletter->content,
-    				'createdAt' => $newsletter->created_at->format('d.m.Y H.i'),
-    				'updated_at' => $newsletter->updated_at->format('d.m.Y H.i')
-    			})
+    			'content' => [
+                    'id' => $newsletter->id,
+                    'title' => $newsletter->title,
+                    'content' => $newsletter->content,
+                    'createdAt' => $newsletter->created_at->format('d.m.Y H.i'),
+                    'updated_at' => $newsletter->updated_at->format('d.m.Y H.i')
+                ]
     		];
     	}
 
-    	return view('auth.newsletter.newsletter.detail', compat(;newsletter))
+    	return view('auth.newsletter.newsletter.detail', compact('newsletter'))
     		->withTitle($newsletter->title);
     }
 

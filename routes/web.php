@@ -40,6 +40,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
 
 		// newsletter
 		Route::get('/', 'NewsletterController@getIndex')->name('admin.newsletter');
+		Route::get('detail/{id}', 'NewsletterController@getDetail')->name('admin.newsletter.detail');
 
 		// unsubscribe reasons
 		Route::get('reasons', 'ReasonController@getIndex')->name('admin.reason');
