@@ -1,4 +1,4 @@
 # Summary
 
-* Instalasi
+* [Instalasi](instalasi.md)
 
