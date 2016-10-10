@@ -36,7 +36,7 @@
                                     </td>
                                     <td>{{ $list->created_at->format('d.m.Y H:i') }}</td>
                                     <td class="text-right">
-                                        <a href="" class="btn btn-default delete" title="Edit current item"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('admin.list.edit', $list->id) }}" class="btn btn-default delete" title="Edit current item"><i class="fa fa-pencil"></i></a>
                                         <a href="" class="btn btn-danger delete" title="Delete current item"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>

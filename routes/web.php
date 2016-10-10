@@ -37,6 +37,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
 		// lists
 		Route::get('lists', 'ListController@getIndex')->name('admin.list');
 		Route::post('lists', 'ListController@postCreate')->name('admin.list.create.post');
+		Route::get('list/edit/{id}', 'ListController@getEdit')->name('admin.list.edit');
+		Route::post('list/edit', 'ListController@postEdit')->name('admin.list.edit.post');
 
 		// newsletter
 		Route::get('/', 'NewsletterController@getIndex')->name('admin.newsletter');
