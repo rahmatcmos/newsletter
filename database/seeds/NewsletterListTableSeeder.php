@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 
 use Carbon\Carbon;
 use App\NewsletterList;
+use App\User;
 
 class NewsletterListTableSeeder extends Seeder
 {
@@ -15,7 +16,10 @@ class NewsletterListTableSeeder extends Seeder
     public function run()
     {
     	$list = new NewsletterList;
+        $user = User::whereGroup('user')->first();
+
         DB::table($list->getTable())->insert([
+            'user_id' => $user->id,
         	'slug' => 'default',
         	'name' => 'Default',
         	'description' => 'Default list for all subscribers.',

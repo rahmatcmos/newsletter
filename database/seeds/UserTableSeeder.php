@@ -13,12 +13,25 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         $user = new User;
-        \DB::table($user->getTable())->insert([
+
+        // default user for admin
+        DB::table($user->getTable())->insert([
         	'name' => 'Administrator',
         	'email' => 'admin@email.com',
+            'group' => 'admin',
         	'password' => bcrypt('admin'),
         	'created_at' => \Carbon\Carbon::now(),
         	'updated_at' => \Carbon\Carbon::now()
+        ]);
+
+        // default user for user
+        DB::table($user->getTable())->insert([
+            'name' => 'User',
+            'email' => 'user@email.com',
+            'group' => 'user',
+            'password' => bcrypt('user'),
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
         ]);
     }
 }

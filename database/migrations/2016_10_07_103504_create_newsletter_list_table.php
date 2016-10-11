@@ -15,11 +15,15 @@ class CreateNewsletterListTable extends Migration
     {
         Schema::create('newsletter_lists', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('slug', 55)->unique();
             $table->string('name', 50);
             $table->text('description');
             $table->boolean('is_default');
             $table->timestamps();
+
+            // table index
+            $table->index('name', 'LIST_NAME_INDEX');
         });
     }
 

@@ -17,9 +17,13 @@ class CreateSubscriberTable extends Migration
             $table->increments('id');
             $table->integer('newsletter_list_id');
             $table->string('name', 50);
-            $table->string('email', 100)->unique();
+            $table->string('email', 100);
             $table->enum('status', ['pending', 'subscribed', 'unsubscribed'])->default('unsubscribed');
             $table->timestamps();
+
+            // create index
+            $table->index('email', 'SUBSCRIBER_EMAIL_INDEX');
+            $table->index('name', 'SUBSCRIBER_NAME_INDEX');
         });
     }
 

@@ -15,12 +15,16 @@ class CreateNewsletterTable extends Migration
     {
         Schema::create('newsletters', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('title', 100);
             $table->string('description', 250);
             $table->text('content');
             $table->dateTime('sent_at');
             $table->enum('status', ['drafted', 'sent'])->default('drafted');
             $table->timestamps();
+
+            // index
+            $table->index('title', 'NEWSLETTER_TITLE_INDEX');
         });
     }
 
