@@ -27,10 +27,23 @@
 	                        		<label for="name">Application Name</label>
 	                        		<input type="text" name="app_name" value="{{ old('app_name', config('app.name')) }}" class="form-control">
 	                        	</div>
+	                        	<div class="form-group {{ $errors->has('app_email') ? 'has-error' : '' }}">
+	                        		<label for="name">Email</label>
+	                        		<input type="text" name="app_email" value="{{ old('app_email', config('app.email')) }}" class="form-control">
+	                        	</div>
+
+								<h4>Date and Time</h4>
+	                        	<div class="form-group {{ $errors->has('app_timezone') ? 'has-error' : '' }}">
+	                        		<label for="name">Timezone</label>
+	                        		<input type="text" name="app_timezone" value="{{ old('app_timezone', config('app.timezone')) }}" class="form-control">
+	                        	</div>
+	                        	<div class="form-group {{ $errors->has('date_format') ? 'has-error' : '' }}">
+	                        		<label for="name">Format</label>
+	                        		<input type="text" name="date_format" value="{{ old('date_format', config('date.format')) }}" class="form-control">
+	                        	</div>
 	                        </div>
 	                        <div id="newsletter" class="tab-pane fade">
-	                            <h3>Menu 1</h3>
-	                            <p>Some content in menu 1.</p>
+	                        	
 	                        </div>
 	                    </div>
 

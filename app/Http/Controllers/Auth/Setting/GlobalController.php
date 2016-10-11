@@ -21,8 +21,6 @@ class GlobalController extends Controller
 	 */
     public function getIndex()
     {
-    	$settings = Setting::all();
-
     	return view('auth.setting.global.index', compact('settings'))
     		->withTitle('Setting');
     }

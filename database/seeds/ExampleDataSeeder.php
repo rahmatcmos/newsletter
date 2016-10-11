@@ -16,5 +16,6 @@ class ExampleDataSeeder extends Seeder
         $this->call(SubscriberTableSeeder::class);
         $this->call(NewsletterReasonTableSeeder::class);
         $this->call(NewsletterTableSeeder::class);
+        $this->call(SettingTableSeeder::class);
     }
 }
