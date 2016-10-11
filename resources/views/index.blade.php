@@ -63,7 +63,7 @@
         </div>
 
         <div class="links">
-            <a href="http://laravel.web.id">Tutorial Laravel</a>
+            <a href="http://laravel.web.id">Website</a>
             <a href="https://github.com/arvernester/newsletter">GitHub</a>
             <a href="https://facebook.com/laravel.web.id">Facebook</a>
         </div>

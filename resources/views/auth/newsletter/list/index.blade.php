@@ -32,7 +32,7 @@
                                     @endif
                                     <td><a href="{{ route('admin.subscriber', $list->slug) }}">{{ $list->name }}</a></td>
                                     <td>{{ $list->description }}</td>
-                                    <td>{{ $list->subscribers->count() }} people</td>
+                                    <td>{{ $list->subscribers->count() }} {{ $list->subscribers->count() <= 1 ? 'person' : 'people' }}</td>
                                     <td>
                                         @if ($list->is_default)
                                             <span class="label label-success">Yes</span>

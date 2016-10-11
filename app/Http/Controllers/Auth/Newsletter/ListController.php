@@ -8,6 +8,10 @@ use App\NewsletterList;
 use App\Http\Requests\Newsletter\CreateListRequest;
 use App\Http\Requests\Newsletter\EditListRequest;
 
+/**
+ * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ * @link https://github.com/arvernester/newsletter
+ */
 class ListController extends Controller
 {
     /**
@@ -71,7 +75,9 @@ class ListController extends Controller
      */
     public function getEdit($id = null)
     {
-        $list = NewsletterList::findOrFail($id);
+        $list = NewsletterList::whereUserId(Auth::id())
+            ->whereId($id)
+            ->firstOrFail();
 
         return view('auth.newsletter.list.edit', compact('list'))
             ->withTitle(sprintf('Edit %s', $list->name));
@@ -86,7 +92,9 @@ class ListController extends Controller
     public function postEdit(EditListRequest $request)
     {
         $list = NewsletterList::whereUserId(Auth::id())
-            ->findOrFail($request->id);
+            ->whereId($request->id)
+            ->firstOrFail();
+
         $list->name = $request->name; 
         $list->description = $request->description;
 
