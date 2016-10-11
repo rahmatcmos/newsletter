@@ -145,15 +145,15 @@ class NewsletterController extends Controller
   		switch ($request->type) {
   			case 'specified':
   				if (! empty($request->emails)) {
-  					$subscribers = Subsciber::whereIn('email', request('emails'))->get();
+  					$subscribers = NewsletterSubsciber::whereIn('email', request('emails'))->get();
   				}
   				else {
-  					$subscribers = Subsciber::where('newsletter_list_id', $request->list_id)->get();
+  					$subscribers = NewsletterSubsciber::where('newsletter_list_id', $request->list_id)->get();
   				}
   				break;
   			
   			default:
-  				$subscribers = Subsciber::whereStatus('subscribed')->get();
+  				$subscribers = NewsletterSubsciber::whereStatus('subscribed')->get();
   				break;
   		}
 

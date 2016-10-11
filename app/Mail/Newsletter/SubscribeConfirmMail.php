@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Subscriber;
+use App\NewsletterSubscriber;
 
 class SubscribeConfirmMail extends Mailable
 {
@@ -20,7 +20,7 @@ class SubscribeConfirmMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Subscriber $subscriber)
+    public function __construct(NewsletterSubscriber $subscriber)
     {
         $this->subscriber = $subscriber;
     }

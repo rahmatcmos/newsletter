@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Subscriber;
+use App\NewsletterSubscriber;
 use App\Http\Requests\Newsletter\SubscribeRequest;
 use App\Mail\Newsletter\SubscribeMail;
 use App\Mail\Newsletter\SubscribeConfirmMail;
@@ -23,7 +23,7 @@ class NewsletterController extends Controller
             abort_if(empty($list), 404, 'No default list defined.');
 
     		// save to database
-	    	$subscriber = Subscriber::FirstOrNew(['email' => $request->email]);
+	    	$subscriber = NewsletterSubscriber::FirstOrNew(['email' => $request->email]);
             $subscriber->newsletter_list_id = $list->id;
 	    	$subscriber->name = $request->name;
 	    	$subscriber->status = 'pending';
@@ -44,7 +44,7 @@ class NewsletterController extends Controller
         abort_if(empty($email), 404, 'Email address not found.');
 
         // find email
-        $subscriber = Subscriber::whereEmail($email)->first();
+        $subscriber = NewsletterSubscriber::whereEmail($email)->first();
         if (empty($subscriber)) {
             return redirect()
                 ->route('newsletter.index')

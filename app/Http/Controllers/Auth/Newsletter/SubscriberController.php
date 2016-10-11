@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\Newsletter;
 use App\Http\Controllers\Controller;
 
 use Auth;
-use App\Subscriber;
+use App\NewsletterSubscriber;
 use App\NewsletterList;
 use App\Http\Requests\Newsletter\CreateSubscriberRequest;
 use App\Mail\Newsletter\SubscribeMail;
@@ -28,7 +28,7 @@ class SubscriberController extends Controller
             $list = NewsletterList::whereSlug($listSlug)->first();
         }
 
-    	$subscribers = Subscriber::select('id', 'newsletter_list_id', 'name', 'email', 'created_at', 'status')
+    	$subscribers = NewsletterSubscriber::select('id', 'newsletter_list_id', 'name', 'email', 'created_at', 'status')
             ->with('list')
             ->filter(isset($list) ? $list : null)
             ->sort()
@@ -68,7 +68,7 @@ class SubscriberController extends Controller
     public function postCreate(CreateSubscriberRequest $request)
     {
         \DB::transaction(function() use($request){
-            $subscriber = new Subscriber;
+            $subscriber = new NewsletterSubscriber;
             $subscriber->newsletter_list_id = $request->list;
             $subscriber->email = $request->email;
             $subscriber->name = $request->name;
@@ -101,7 +101,7 @@ class SubscriberController extends Controller
      */
     public function getDelete($id = null)
     {
-        $subscriber = Subscriber::whereHas('list', function($query){
+        $subscriber = NewsletterSubscriber::whereHas('list', function($query){
                 return $query->whereUserId(Auth::user()->id);
             })
             ->whereId($id)
