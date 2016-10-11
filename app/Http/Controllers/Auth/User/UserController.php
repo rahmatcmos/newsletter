@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth\User;
 use App\Http\Controllers\Controller;
 
+use Auth;
 use App\User;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\User\CreateRequest;
 use App\Mail\User\CreateMail;
 use App\Mail\User\DeleteMail;
@@ -21,7 +23,9 @@ class UserController extends Controller
 	 */
     public function getIndex()
     {
-    	$users = User::orderBy('name', 'ASC')
+        abort_if(! Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
+    	
+        $users = User::orderBy('name', 'ASC')
             ->with('lists')
             ->paginate(20);
 
@@ -41,7 +45,9 @@ class UserController extends Controller
      */
     public function getCreate()
     {
-    	return view('auth.user.user.create')
+        abort_if(! Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
+    	
+        return view('auth.user.user.create')
     		->withTitle('Create New User');
     }
 
@@ -53,6 +59,8 @@ class UserController extends Controller
      */
     public function postCreate(CreateRequest $request)
     {
+        abort_if(! Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
+
     	\DB::transaction(function() use($request) {
     	    $user = new User;
 	    	$user->name = $request->name;
@@ -82,6 +90,8 @@ class UserController extends Controller
      */
     public function getDelete($id = null)
     {
+        abort_if(! Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
+        
     	abort_if(\Auth::id() == $id, 403, 'You can\'t delete yourself.');
 
     	$user = User::findOrFail($id);
