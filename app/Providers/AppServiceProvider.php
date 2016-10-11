@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Support\Facades\Schema;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +15,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // setup global setting
+        if (Schema::hasTable('settings')) {
+            $settings = \App\Setting::all();
+            foreach ($settings as $setting) {
+                $key = str_replace('_', '.', $setting->key);
+                config([$key => $setting->value]);
+            }
+        }
     }
 
     /**

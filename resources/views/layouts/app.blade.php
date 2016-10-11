@@ -82,7 +82,7 @@
                                 </ul>
                             </li>
                             <li><a href="{{ route('admin.user') }}">Users</a></li>
-                            <li><a href="">Settings</a></li>
+                            <li><a href="{{ route('admin.setting') }}">Settings</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                    <i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }} ({{ ucwords(auth()->user()->group )}}) <span class="caret"></span>

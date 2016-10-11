@@ -60,6 +60,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
 		Route::get('edit/{id}', 'UserController@getEdit')->name('admin.user.edit');
 		Route::get('delete/{id}', 'UserController@getDelete')->name('admin.user.delete');
 	});
+
+	Route::group(['namespace' => 'Setting', 'prefix' => 'setting'], function(){
+		Route::get('/', 'GlobalController@getIndex')->name('admin.setting');
+		Route::post('/', 'GlobalController@postCreate')->name('admin.setting.post');
+	});
 });
 
 Route::group(['prefix' => 'newsletter'], function(){
