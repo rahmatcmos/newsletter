@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth\Newsletter;
 use App\Http\Controllers\Controller;
 
+use Auth;
 use App\NewsletterList;
 use App\Http\Requests\Newsletter\CreateListRequest;
 use App\Http\Requests\Newsletter\EditListRequest;
@@ -18,7 +19,12 @@ class ListController extends Controller
     {
     	$lists = NewsletterList::orderBy('name', 'ASC')
             ->with('subscribers')
+            ->filter()
     		->paginate(20);
+
+        if (Auth::user()->group === 'admin') {
+            $lists->load('user');
+        }
 
         if (request()->ajax()) {
             return [
@@ -45,6 +51,7 @@ class ListController extends Controller
     public function postCreate(CreateListRequest $request)
     {
     	$list = new NewsletterList;
+        $list->user_id = Auth::user()->id;
     	$list->slug = str_slug($request->name);
     	$list->name = $request->name;
     	$list->description = $request->description;
@@ -78,7 +85,8 @@ class ListController extends Controller
      */
     public function postEdit(EditListRequest $request)
     {
-        $list = NewsletterList::findOrFail($request->id);
+        $list = NewsletterList::whereUserId(Auth::user()->id)
+            ->findOrFail($request->id);
         $list->name = $request->name; 
         $list->description = $request->description;
 
@@ -86,6 +94,28 @@ class ListController extends Controller
             return redirect()
                 ->route('admin.list')
                 ->with('success', sprintf('List %s has been updated.', $list->name));
+        }
+
+        // come for no reason
+        return redirect()->back();
+    }
+
+    /**
+     * Delete single row of list
+     * 
+     * @param  integer $id
+     * @return void 
+     */
+    public function getDelete($id = null)
+    {
+        $list = NewsletterList::whereUserId(Auth::user()->id)
+            ->whereId($id)
+            ->firstOrFail();
+
+        if ($list->delete() === true) {
+            return redirect()
+                ->route('admin.list')
+                ->with('success', 'List has been deleted.');
         }
 
         // come for no reason

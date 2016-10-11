@@ -33,6 +33,9 @@
                     <table class="table table-border">
                     	<thead>
                             <th><input type="checkbox"></th>
+                            @if (auth()->user()->group === 'admin')
+                                <th>User</th>
+                            @endif
                             <th>List</th>
                     		<th>Name</th>
                     		<th>Email</th>
@@ -43,6 +46,9 @@
                     	@foreach ($subscribers as $subscriber)
                     	<tr class="{{ $subscriber->status === 'unsubscribed' ? 'text-muted' : '' }}">
                             <td><input type="checkbox" value="{{ $subscriber->id }}"></td>
+                            @if (auth()->user()->group === 'admin')
+                                <td><a href="">{{ $subscriber->list->user->name }}</a></td>
+                            @endif
                             <td>{{ $subscriber->list->name }}</td>
                     		<td>{{ $subscriber->name }}</td>
                     		<td>{{ $subscriber->email }}</td>
@@ -117,24 +123,24 @@
             <div class="modal-header">
                 <h4 class="modal-title">Create New Subscriber</h4>
             </div>
-            <form action="{{ route('admin.subscriber.create.post') }}" method="post" role="form" id="create-subscriber">
+            <form action="{{ route('admin.subscriber.create.post') }}" method="post" role="form" id="create-subscriber" data-toggle="validator">
             {{ csrf_field() }}
             {{ method_field('post') }}
                 <div class="modal-body">
                     <div class="validations"></div>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" name="name" id="name" class="form-control">
+                        <input type="text" name="name" id="name" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control">
+                        <input type="email" name="email" id="email" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="list" class="control-label">List</label>
-                        <select name="list" id="list" class="form-control"></select>
+                        <select name="list" id="list" class="form-control" required></select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -147,6 +153,10 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('component/bootstrap-validator/dist/validator.min.js') }}"></script>
+@endpush
 
 @push('script')
 <script>
@@ -186,7 +196,7 @@
                     $('#list').empty()
                     $.each(response.content, function(i, obj){
                         $('#list').append($('<option>').text(obj.name).attr('value', obj.id));
-                });
+                    });
                 }
             })
         })

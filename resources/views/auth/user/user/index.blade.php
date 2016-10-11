@@ -25,14 +25,17 @@
 
                     <table class="table">
                         <thead>
+                            <th>Type</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Lists</th>
                             <th>Create Date</th>
                             <th class="text-right">Actions</th>
                         </thead>
                         <tbody>
                             @foreach($users as $user)
                                 <tr>
+                                    <td>{{ ucwords($user->group) }}</td>
                                     <td>
                                         {{ $user->name }}
                                         @if ($user->id == auth()->user()->id)
@@ -40,6 +43,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->lists->count() }}</td>
                                     <td>{{ $user->created_at->format('d.m.Y H.i') }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>

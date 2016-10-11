@@ -21,10 +21,17 @@ class UserController extends Controller
 	 */
     public function getIndex()
     {
-    	$users = User::orderBy('name', 'ASC')->paginate(20);
+    	$users = User::orderBy('name', 'ASC')
+            ->with('lists')
+            ->paginate(20);
 
     	return view('auth.user.user.index', compact('users'))
     		->withTitle('Users');
+    }
+
+    public function getProfile($id = null)
+    {
+        # code...
     }
 
     /**

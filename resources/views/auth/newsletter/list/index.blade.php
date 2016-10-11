@@ -14,6 +14,9 @@
                     
                     <table class="table">
                         <thead>
+                            @if (auth()->user()->group === 'admin')
+                                <th>User</th>
+                            @endif
                             <th>Name</th>
                             <th>Description</th>
                             <th>Total Subscribers</th>
@@ -24,6 +27,9 @@
                         <tbody>
                             @foreach ($lists as $list)
                                 <tr>
+                                    @if (auth()->user()->group === 'admin')
+                                        <td><a href="">{{ $list->user->name }}</a></td>
+                                    @endif
                                     <td><a href="{{ route('admin.subscriber', $list->slug) }}">{{ $list->name }}</a></td>
                                     <td>{{ $list->description }}</td>
                                     <td>{{ $list->subscribers->count() }} people</td>
@@ -36,8 +42,8 @@
                                     </td>
                                     <td>{{ $list->created_at->format('d.m.Y H:i') }}</td>
                                     <td class="text-right">
-                                        <a href="{{ route('admin.list.edit', $list->id) }}" class="btn btn-default delete" title="Edit current item"><i class="fa fa-pencil"></i></a>
-                                        <a href="" class="btn btn-danger delete" title="Delete current item"><i class="fa fa-trash"></i></a>
+                                        <a href="{{ route('admin.list.edit', $list->id) }}" class="btn btn-default edit" title="Edit current item"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('admin.list.delete', $list->id) }}" class="btn btn-danger delete" title="Delete current item"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -78,6 +84,26 @@
         </div>
     </div>
 </div>
+
+<div id="delete-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Delete List</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure wan to delete this item? This action can't be undone.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default dismiss" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger delete"> <i class="fa fa-trash"></i> Delete List</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('script')
@@ -86,6 +112,16 @@
         $('a.create').click(function(){
             $('#create-modal').modal()
             return false
+        })
+
+        $('a.delete').click(function(){
+            $('#delete-modal').modal()
+            $('button.delete').attr('data-url', $(this).attr('href'))
+            return false
+        })
+
+        $('button.delete').click(function(){
+            $(location).attr('href', $(this).attr('data-url'))
         })
     })
 </script>

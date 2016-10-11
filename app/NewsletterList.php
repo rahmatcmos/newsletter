@@ -13,8 +13,38 @@ class NewsletterList extends Model
 	 */
     protected $table = 'newsletter_lists';
 
+    /**
+     * Has many subscribers
+     * 
+     * @return object
+     */
     public function subscribers()
     {
-    	return $this->hasMany(Subscriber::class, 'newsletter_list_id');
+    	return $this->hasMany(\App\Subscriber::class, 'newsletter_list_id');
+    }
+
+    /**
+     * Lists belongs to Users
+     * 
+     * @return object
+     */
+    public function user()
+    {
+        return $this->belongsTo(\App\User::class, 'user_id', 'id');
+    }
+
+    /**
+     * Filter newsleter list
+     * 
+     * @param  object $query
+     * @return object
+     */
+    public function scopeFilter($query)
+    {
+    	if (\Auth::user()->group === 'user') {
+    		$query->where('user_id', \Auth::user()->id);
+    	}
+
+    	return $query;
     }
 }

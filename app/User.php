@@ -26,4 +26,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Users has many Newsletters Lists
+     * 
+     * @return object
+     */
+    public function lists()
+    {
+        return $this->hasMany(\App\NewsletterList::class, 'user_id');
+    }
 }
