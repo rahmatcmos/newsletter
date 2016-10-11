@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth\Newsletter;
 use App\Http\Controllers\Controller;
 
+use Auth;
 use App\Newsletter;
+use App\NewsletterSubsciber;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -19,9 +21,11 @@ class NewsletterController extends Controller
     public function getIndex()
     {
     	$newsletters = Newsletter::orderBy('title', 'ASC')
+            ->filter()
     		->paginate(20);
     		
-    	return view('auth.newsletter.newsletter.index', compact('newsletters'));
+    	return view('auth.newsletter.newsletter.index', compact('newsletters'))
+            ->withTitle('Newsletter Templates');
     }
 
     /**
@@ -68,6 +72,7 @@ class NewsletterController extends Controller
     public function postCreate(CreateRequest $request)
     {
     	$newsletter = new Newsletter;
+        $newsletter->user_id = \Auth::id();
     	$newsletter->title = $request->title;
     	$newsletter->content = $request->content;
 
@@ -95,16 +100,20 @@ class NewsletterController extends Controller
 
     /**
      * Save updated newsletter
+     * 
      * @param  EditNewsletterRequest $request
      * @return void                         
      */
     public function postEdit(EditNewsletterRequest $request)
     {
-    	$newsletter = Newsletter::findOrFail(\Crypt::decrypt($request->id));
+    	$newsletter = Newsletter::whereUserId(Auth::id())
+            ->whereId($request->id)
+            ->findOrFail();
+
     	$newsletter->title = $request->title;
     	$newsletter->content = $request->content;
 
-    	if ($newsletter->save()) {
+    	if ($newsletter->save() === true) {
     		return redirect()
     			->route('admin.newsletter.detail', $newsletter->id)
     			->with('success', 'Newsletter has been updated.');
@@ -122,9 +131,11 @@ class NewsletterController extends Controller
     public function getDelete($id = null)
     {
     	abort_if(empty($id), 404, 'Identifier is not defined.');
-    	$newsletter = Newsletter::findOrFail($id);
+    	$newsletter = Newsletter::whereUserId(Auth::id())
+            ->whereId($id)
+            ->findOrFail();
 
-    	if ($newsletter->delete()) {
+    	if ($newsletter->delete() === true) {
 	    	return redirect()
 	    		->route('admin.newsletter')
 	    		->with('success', sprintf('Newsletter %s has been deleted.', $newsletter->title));

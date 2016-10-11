@@ -42,7 +42,7 @@ class NewsletterList extends Model
     public function scopeFilter($query)
     {
     	if (\Auth::user()->group === 'user') {
-    		$query->where('user_id', \Auth::user()->id);
+    		$query->where('user_id', \Auth::id());
     	}
 
     	return $query;

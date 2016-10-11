@@ -19,4 +19,13 @@ class Newsletter extends Model
 	 * @var array
 	 */
 	protected $dates = ['sent_at'];
+
+	public function scopeFilter($query)
+	{
+		if (\Auth::check() AND \Auth::user()->group === 'user') {
+			$query->whereUserId(\Auth::id());
+		}
+
+		return $query;
+	}
 }

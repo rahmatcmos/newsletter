@@ -51,7 +51,7 @@ class ListController extends Controller
     public function postCreate(CreateListRequest $request)
     {
     	$list = new NewsletterList;
-        $list->user_id = Auth::user()->id;
+        $list->user_id = Auth::id();
     	$list->slug = str_slug($request->name);
     	$list->name = $request->name;
     	$list->description = $request->description;
@@ -85,7 +85,7 @@ class ListController extends Controller
      */
     public function postEdit(EditListRequest $request)
     {
-        $list = NewsletterList::whereUserId(Auth::user()->id)
+        $list = NewsletterList::whereUserId(Auth::id())
             ->findOrFail($request->id);
         $list->name = $request->name; 
         $list->description = $request->description;
@@ -108,7 +108,7 @@ class ListController extends Controller
      */
     public function getDelete($id = null)
     {
-        $list = NewsletterList::whereUserId(Auth::user()->id)
+        $list = NewsletterList::whereUserId(Auth::id())
             ->whereId($id)
             ->firstOrFail();
 

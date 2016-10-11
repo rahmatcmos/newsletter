@@ -102,7 +102,7 @@ class SubscriberController extends Controller
     public function getDelete($id = null)
     {
         $subscriber = NewsletterSubscriber::whereHas('list', function($query){
-                return $query->whereUserId(Auth::user()->id);
+                return $query->whereUserId(Auth::id());
             })
             ->whereId($id)
             ->firstOrFail();

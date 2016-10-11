@@ -82,7 +82,7 @@ class UserController extends Controller
      */
     public function getDelete($id = null)
     {
-    	abort_if(\Auth::user()->id == $id, 403, 'You can\'t delete yourself.');
+    	abort_if(\Auth::id() == $id, 403, 'You can\'t delete yourself.');
 
     	$user = User::findOrFail($id);
 
