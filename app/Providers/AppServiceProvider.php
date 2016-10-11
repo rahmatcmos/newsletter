@@ -17,7 +17,10 @@ class AppServiceProvider extends ServiceProvider
     {
         // setup global setting
         if (Schema::hasTable('settings')) {
-            $settings = \App\Setting::all();
+            $settings = \Cache::get('setting', function(){
+                return \App\Setting::all();
+            });
+
             foreach ($settings as $setting) {
                 $key = str_replace('_', '.', $setting->key);
                 config([$key => $setting->value]);
