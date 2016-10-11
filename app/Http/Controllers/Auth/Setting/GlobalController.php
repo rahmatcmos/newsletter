@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth\Setting;
 use App\Http\Controllers\Controller;
 
 use DB;
+use Auth;
 use Carbon\Carbon;
 use App\Setting;
 use App\Http\Requests\Setting\SaveRequest;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -21,6 +23,8 @@ class GlobalController extends Controller
 	 */
     public function getIndex()
     {
+    	abort_if(! Gate::allows('settings', Auth::user()), 403, 'This action is unauthorized.');
+
     	return view('auth.setting.global.index', compact('settings'))
     		->withTitle('Setting');
     }
@@ -32,6 +36,8 @@ class GlobalController extends Controller
      */
     public function postCreate(SaveRequest $request)
     {
+    	abort_if(! Gate::allows('settings', Auth::user()), 403, 'This action is unauthorized.');
+
     	$setting = new Setting;
 
     	// clear all data

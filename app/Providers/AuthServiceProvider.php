@@ -25,8 +25,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // define fate for users
+        // define gate for users
         Gate::define('users', function($user){
+            return $user->group === 'admin';
+        });
+
+        // define gate for global config
+        Gate::define('settings', function($user){
             return $user->group === 'admin';
         });
     }
