@@ -23,8 +23,8 @@
                                 <td><a href="{{ route('admin.newsletter.detail', $newsletter->id) }}">{{ $newsletter->title }}</a></td>
                                 <td>{{ $newsletter->description }}</td>
                                 <td>{{ $newsletter->status }}</td>
-                                <td>{{ $newsletter->sent_at->format('d.m.y H.i') }}</td>
-                                <td>{{ $newsletter->created_at->format('d.m.y H.i') }}</td>
+                                <td>{{ $newsletter->sent_at->format(config('date.format')) }}</td>
+                                <td>{{ $newsletter->created_at->format(config('date.format')) }}</td>
                                 <td class="text-right">
                                     <a href="" class="btn btn-primary" title="Send newsletter"><i class="fa fa-envelope"></i></a>
                                     <a href="" class="btn btn-default" title="Edit current item"><i class="fa fa-edit"></i></a>

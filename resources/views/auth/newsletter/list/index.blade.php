@@ -40,7 +40,7 @@
                                             <span class="label label-danger">No</span>
                                         @endif
                                     </td>
-                                    <td>{{ $list->created_at->format('d.m.Y H:i') }}</td>
+                                    <td>{{ $list->created_at->format(config('date.format')) }}</td>
                                     <td class="text-right">
                                         <a href="{{ route('admin.list.edit', $list->id) }}" class="btn btn-default edit" title="Edit current item"><i class="fa fa-pencil"></i></a>
                                         <a href="{{ route('admin.list.delete', $list->id) }}" class="btn btn-danger delete" title="Delete current item"><i class="fa fa-trash"></i></a>

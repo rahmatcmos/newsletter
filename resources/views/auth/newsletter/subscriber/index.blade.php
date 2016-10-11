@@ -53,7 +53,7 @@
                     		<td>{{ $subscriber->name }}</td>
                     		<td>{{ $subscriber->email }}</td>
                     		<td><span class="label label-{{ $labels[$subscriber->status] }}">{{ $subscriber->status }}</span></td>
-                            <td>{{ $subscriber->created_at->format('d.m.Y H.i') }}</td>
+                            <td>{{ $subscriber->created_at->format(config('date.format')) }}</td>
                     		<td class="text-right">
                                 <a href="" class="btn btn-default" title="Send newsletter"><i class="fa fa-envelope"></i></a>
                                 <a href="" class="btn btn-default" title="Edit current subscriber"><i class="fa fa-pencil"></i></a>
