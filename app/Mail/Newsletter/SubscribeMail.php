@@ -2,12 +2,10 @@
 
 namespace App\Mail\Newsletter;
 
+use App\NewsletterSubscriber;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
-use App\NewsletterSubscriber;
 
 class SubscribeMail extends Mailable
 {

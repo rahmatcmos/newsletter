@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
-use Carbon\Carbon;
-use App\Subscriber;
 use App\NewsletterList;
+use App\Subscriber;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class SubscriberTableSeeder extends Seeder
 {
@@ -18,17 +17,17 @@ class SubscriberTableSeeder extends Seeder
         // find default list
         $list = NewsletterList::whereIsDefault(true)->first();
 
-        $subscriber = new Subscriber;
+        $subscriber = new Subscriber();
         $faker = Faker\Factory::create('id_ID');
         foreach (range(1, 100) as $index) {
-        	DB::table($subscriber->getTable())->insert([
+            DB::table($subscriber->getTable())->insert([
                 'newsletter_list_id' => $list->id,
-        		'name' => $faker->name,
-        		'email' => $faker->email,
-        		'status' => 'subscribed',
-        		'created_at' => Carbon::now(),
-        		'updated_at' => Carbon::now()
-        	]);
+                'name'               => $faker->name,
+                'email'              => $faker->email,
+                'status'             => 'subscribed',
+                'created_at'         => Carbon::now(),
+                'updated_at'         => Carbon::now(),
+            ]);
         }
     }
 }

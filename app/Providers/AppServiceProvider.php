@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // setup global setting
         if (Schema::hasTable('settings')) {
-            $settings = \Cache::get('setting', function(){
+            $settings = \Cache::get('setting', function () {
                 return \App\Setting::all();
             });
 

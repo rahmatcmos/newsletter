@@ -2,40 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\NewsletterSubscriber;
 use App\Http\Requests\Newsletter\SubscribeRequest;
-use App\Mail\Newsletter\SubscribeMail;
 use App\Mail\Newsletter\SubscribeConfirmMail;
+use App\Mail\Newsletter\SubscribeMail;
+use App\NewsletterSubscriber;
 
 class NewsletterController extends Controller
 {
     public function getIndex()
     {
-    	return view('newsletter.index')
-    		->withTitle('Subscribe Newsletter');
+        return view('newsletter.index')
+            ->withTitle('Subscribe Newsletter');
     }
 
     public function postSubscribe(SubscribeRequest $request)
     {
-    	\DB::transaction(function() use($request){
+        \DB::transaction(function () use ($request) {
             // get default list
             $list = \App\NewsletterList::whereIsDefault(true)->first();
             abort_if(empty($list), 404, 'No default list defined.');
 
-    		// save to database
-	    	$subscriber = NewsletterSubscriber::FirstOrNew(['email' => $request->email]);
+            // save to database
+            $subscriber = NewsletterSubscriber::FirstOrNew(['email' => $request->email]);
             $subscriber->newsletter_list_id = $list->id;
-	    	$subscriber->name = $request->name;
-	    	$subscriber->status = 'pending';
-	    	$subscriber->save();
+            $subscriber->name = $request->name;
+            $subscriber->status = 'pending';
+            $subscriber->save();
 
-	    	// send email confirmation
-            \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber)); 
-    	});
+            // send email confirmation
+            \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber));
+        });
 
-    	return redirect()
-    		->route('newsletter.index')
-    		->with('success', 'Thank you for registering our newsletter. Please check your inbox.');    	
+        return redirect()
+            ->route('newsletter.index')
+            ->with('success', 'Thank you for registering our newsletter. Please check your inbox.');
     }
 
     public function getConfirm()
@@ -63,12 +63,14 @@ class NewsletterController extends Controller
     }
 
     /**
-     * Show dissapointed text and reason form
+     * Show dissapointed text and reason form.
+     *
      * @return void
      */
     public function getUnsubscribe()
     {
         $reasons = \App\NewsletterReason::all();
+
         return view('newsletter.unsubscribe', compact('reasons'))
             ->withTitle('Unsubscribe Newsletter');
     }

@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Laravel\Scout\Searchable;
 
 class NewsletterSubscriber extends Model
@@ -11,24 +10,24 @@ class NewsletterSubscriber extends Model
     // use Searchable;
 
     /**
-     * Set table name
-     * 
+     * Set table name.
+     *
      * @var string
      */
     protected $table = 'newsletter_subscribers';
 
     /**
-     * Set field names
-     * 
+     * Set field names.
+     *
      * @var array
      */
     protected $fillable = [
         'newsletter_list_id',
-    	'name',
-    	'email',
-    	'status',
-    	'created_at',
-    	'updated_at'
+        'name',
+        'email',
+        'status',
+        'created_at',
+        'updated_at',
     ];
 
     public function setEmailAttribute($value)
@@ -57,28 +56,29 @@ class NewsletterSubscriber extends Model
     }
 
     /**
-     * Filter data by list and query string
-     * 
-     * @param  object $query
-     * @param  object $list 
-     * @return object      
+     * Filter data by list and query string.
+     *
+     * @param object $query
+     * @param object $list
+     *
+     * @return object
      */
     public function scopeFilter($query, $list = null)
     {
         // filter by user
         if (\Auth::user()->group === 'user') {
-            $query->whereHas('list', function($query){
+            $query->whereHas('list', function ($query) {
                 return $query->whereUserId(\Auth::id());
             });
         }
 
         // filter by user id (if provided)
-        if (! empty($list)) {
+        if (!empty($list)) {
             $query->where('newsletter_list_id', $list->id);
         }
 
         // filter by query string (if provided)
-        if (! empty(request('query'))) {
+        if (!empty(request('query'))) {
             $query->where('name', 'LIKE', '%'.request('query').'%')
                 ->orWhere('email', 'LIKE', '%'.request('query').'%')
                 ->orWhere('status', request('query'));
@@ -88,16 +88,18 @@ class NewsletterSubscriber extends Model
     }
 
     /**
-     * Sorting options
-     * 
-     * @param  object $query
-     * @return object    
+     * Sorting options.
+     *
+     * @param object $query
+     *
+     * @return object
      */
     public function scopeSort($query)
     {
-        if (! empty('by')) {
+        if (!empty('by')) {
             $by = in_array(request('by'), ['ASC', 'DESC']) ? request('by') : 'ASC';
             $column = in_array(request('column'), ['name', 'status', 'email']) ? request('column') : 'name';
+
             return $query->orderBy($column, $by);
         }
     }

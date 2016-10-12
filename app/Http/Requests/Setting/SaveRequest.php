@@ -24,7 +24,7 @@ class SaveRequest extends FormRequest
     public function rules()
     {
         return [
-            'app_name' => 'required'
+            'app_name' => 'required',
         ];
     }
 }

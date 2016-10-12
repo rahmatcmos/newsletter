@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class WelcomeTest extends TestCase
 {
@@ -14,9 +11,9 @@ class WelcomeTest extends TestCase
     public function testExample()
     {
         $this->visit('/')
-        	->see('Laravel')
-        	->see('Facebook')
-        	->see('Github')
-        	->see('Website');
+            ->see('Laravel')
+            ->see('Facebook')
+            ->see('Github')
+            ->see('Website');
     }
 }

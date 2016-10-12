@@ -24,9 +24,9 @@ class EditListRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|exists:newsletter_lists,id',
-            'name' => 'required|max:50',
-            'description' => 'required|max:250'
+            'id'          => 'required|exists:newsletter_lists,id',
+            'name'        => 'required|max:50',
+            'description' => 'required|max:250',
         ];
     }
 }

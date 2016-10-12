@@ -2,20 +2,18 @@
 
 namespace App\Mail\User;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
-use App\User;
 
 class DeleteMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
-     * User data
-     *     
+     * User data.
+     *
      * @var object
      */
     public $user;
