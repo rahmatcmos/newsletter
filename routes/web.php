@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
 
     Route::group(['namespace' => 'User', 'prefix' => 'user'], function () {
         Route::get('/', 'UserController@getIndex')->name('admin.user');
+        Route::get('profile/{id?}', 'UserController@getProfile')->name('admin.user.profile');
         Route::get('create', 'UserController@getCreate')->name('admin.user.create');
         Route::post('create', 'UserController@postCreate')->name('admin.user.create.post');
         Route::get('edit/{id}', 'UserController@getEdit')->name('admin.user.edit');

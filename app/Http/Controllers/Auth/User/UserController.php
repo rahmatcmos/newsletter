@@ -34,9 +34,24 @@ class UserController extends Controller
             ->withTitle('Users');
     }
 
+    /**
+     * Show user profile by logged session or provider id
+     * 
+     * @param  integer $id
+     * 
+     * @return void    
+     */
     public function getProfile($id = null)
     {
-        // code...
+        if (empty($id)) {
+            $user = Auth::user();
+        }
+        else {
+            $user = User::findOrFail($id);
+        }
+
+        return view('auth.user.user.profile', compact('user'))
+            ->withTitle($user->name);
     }
 
     /**

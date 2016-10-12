@@ -46,6 +46,7 @@
                                     <td>{{ $user->lists->count() }}</td>
                                     <td>{{ $user->created_at->format(config('date.format')) }}</td>
                                     <td class="text-right">
+                                        <a href="{{ route('admin.user.profile', $user->id) }}" class="btn btn-default"><i class="fa fa-user"></i></a>
                                         <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
                                         <a href="{{ route('admin.user.delete', $user->id) }}" class="btn btn-danger delete {{ auth()->user()->id == $user->id ? 'disabled' : '' }}"><i class="fa fa-trash"></i></a>
                                     </td>

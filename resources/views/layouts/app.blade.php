@@ -89,7 +89,7 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="">Profile</a></li>
+                                    <li><a href="{{ route('admin.user.profile') }}">Profile</a></li>
                                     <li><a href="">Change Password</a></li>
                                     <li>
                                         <a href="{{ url('/logout') }}"
