@@ -1,56 +1,58 @@
 <?php
 
 namespace App\Http\Controllers\Auth\Newsletter;
-use App\Http\Controllers\Controller;
 
-use Auth;
-use App\NewsletterSubscriber;
-use App\NewsletterList;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Newsletter\CreateSubscriberRequest;
 use App\Mail\Newsletter\SubscribeMail;
+use App\NewsletterList;
+use App\NewsletterSubscriber;
+use Auth;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ *
  * @link https://github.com/arvernester/newsletters
  */
 class SubscriberController extends Controller
 {
     /**
-     * Show subscribers based on list and authenticated user
-     * 
-     * @param  string $listSlug
-     * @return void         
+     * Show subscribers based on list and authenticated user.
+     *
+     * @param string $listSlug
+     *
+     * @return void
      */
     public function getIndex($listSlug = null)
     {
         // search list
-        if (! empty($listSlug)) {
+        if (!empty($listSlug)) {
             $list = NewsletterList::whereSlug($listSlug)->first();
         }
 
-    	$subscribers = NewsletterSubscriber::select('id', 'newsletter_list_id', 'name', 'email', 'created_at', 'status')
+        $subscribers = NewsletterSubscriber::select('id', 'newsletter_list_id', 'name', 'email', 'created_at', 'status')
             ->with('list')
             ->filter(isset($list) ? $list : null)
             ->sort()
-    		->paginate(20);
+            ->paginate(20);
 
         if (Auth::user()->group === 'admin') {
             $subscribers->load('list.user');
         }
 
-    	$labels = [
-    		'Pending' => 'warning',
-    		'Subscribed' => 'success',
-    		'Unsubscribed' => 'danger'
-    	];
+        $labels = [
+            'Pending'      => 'warning',
+            'Subscribed'   => 'success',
+            'Unsubscribed' => 'danger',
+        ];
 
-    	return view('auth.newsletter.subscriber.index', compact('subscribers', 'labels', 'lists'))
-    		->withTitle(sprintf('Subscribers (%d)', $subscribers->total()));
+        return view('auth.newsletter.subscriber.index', compact('subscribers', 'labels', 'lists'))
+            ->withTitle(sprintf('Subscribers (%d)', $subscribers->total()));
     }
 
     /**
-     * Show create form
-     * 
+     * Show create form.
+     *
      * @return void
      */
     public function getCreate()
@@ -60,15 +62,16 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Save new subscriber to database
-     * 
-     * @param  CreateSubscriberRequest $request
-     * @return void                  
+     * Save new subscriber to database.
+     *
+     * @param CreateSubscriberRequest $request
+     *
+     * @return void
      */
     public function postCreate(CreateSubscriberRequest $request)
     {
-        \DB::transaction(function() use($request){
-            $subscriber = new NewsletterSubscriber;
+        \DB::transaction(function () use ($request) {
+            $subscriber = new NewsletterSubscriber();
             $subscriber->newsletter_list_id = $request->list;
             $subscriber->email = $request->email;
             $subscriber->name = $request->name;
@@ -77,7 +80,7 @@ class SubscriberController extends Controller
             // send email confirmation
             \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber));
 
-            if (! request()->ajax()) {
+            if (!request()->ajax()) {
                 session()->flash('success', sprintf('New subscriber named %s (%s) has been created.', $subscriber->name, $subscriber->email));
             }
         });
@@ -85,7 +88,7 @@ class SubscriberController extends Controller
         if (request()->ajax()) {
             return [
                 'isSuccess' => true,
-                'message' => 'Subscriber has been created.'
+                'message'   => 'Subscriber has been created.',
             ];
         }
 
@@ -94,16 +97,17 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Delete single row of subscriber where has belongs to user
-     * 
-     * @param  integer $id
-     * @return void 
+     * Delete single row of subscriber where has belongs to user.
+     *
+     * @param int $id
+     *
+     * @return void
      */
     public function getDelete($id = null)
     {
-        $subscriber = NewsletterSubscriber::whereHas('list', function($query){
-                return $query->whereUserId(Auth::id());
-            })
+        $subscriber = NewsletterSubscriber::whereHas('list', function ($query) {
+            return $query->whereUserId(Auth::id());
+        })
             ->whereId($id)
             ->firstOrFail();
 

@@ -24,9 +24,9 @@ class CreateSubscriberRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:50',
+            'name'  => 'required|max:50',
             'email' => 'required|email|max:100',
-            'list' => 'required|exists:newsletter_lists,id'
+            'list'  => 'required|exists:newsletter_lists,id',
         ];
     }
 }

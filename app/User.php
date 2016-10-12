@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -28,8 +28,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * Users has many Newsletters Lists
-     * 
+     * Users has many Newsletters Lists.
+     *
      * @return object
      */
     public function lists()

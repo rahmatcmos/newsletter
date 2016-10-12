@@ -24,8 +24,8 @@ class CreateListRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:50',
-            'description' => 'max:250'
+            'name'        => 'required|max:50',
+            'description' => 'max:250',
         ];
     }
 }

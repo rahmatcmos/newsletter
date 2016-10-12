@@ -1,30 +1,31 @@
 <?php
 
 namespace App\Http\Controllers\Auth\Newsletter;
-use App\Http\Controllers\Controller;
 
-use Auth;
-use App\NewsletterList;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Newsletter\CreateListRequest;
 use App\Http\Requests\Newsletter\EditListRequest;
+use App\NewsletterList;
+use Auth;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
+ *
  * @link https://github.com/arvernester/newsletter
  */
 class ListController extends Controller
 {
     /**
-     * Show all lists
-     * 
-     * @return void 
+     * Show all lists.
+     *
+     * @return void
      */
     public function getIndex()
     {
-    	$lists = NewsletterList::orderBy('name', 'ASC')
+        $lists = NewsletterList::orderBy('name', 'ASC')
             ->with('subscribers')
             ->filter()
-    		->paginate(20);
+            ->paginate(20);
 
         if (Auth::user()->group === 'admin') {
             $lists->load('user');
@@ -33,45 +34,47 @@ class ListController extends Controller
         if (request()->ajax()) {
             return [
                 'isSuccess' => true,
-                'content' => $lists->map(function($list){
+                'content'   => $lists->map(function ($list) {
                     return [
-                        'id' => $list->id,
-                        'name' => $list->name
+                        'id'   => $list->id,
+                        'name' => $list->name,
                     ];
-                })
+                }),
             ];
         }
 
-    	return view('auth.newsletter.list.index', compact('lists'))
-    		->withTitle('Lists');
+        return view('auth.newsletter.list.index', compact('lists'))
+            ->withTitle('Lists');
     }
 
     /**
-     * Create new list and save to database
-     * 
-     * @param  CreateListRequest $request
-     * @return void                  
+     * Create new list and save to database.
+     *
+     * @param CreateListRequest $request
+     *
+     * @return void
      */
     public function postCreate(CreateListRequest $request)
     {
-    	$list = new NewsletterList;
+        $list = new NewsletterList();
         $list->user_id = Auth::id();
-    	$list->slug = str_slug($request->name);
-    	$list->name = $request->name;
-    	$list->description = $request->description;
-    	$list->is_default = false;
-    	$list->save();
+        $list->slug = str_slug($request->name);
+        $list->name = $request->name;
+        $list->description = $request->description;
+        $list->is_default = false;
+        $list->save();
 
-    	return redirect()
-    		->route('admin.list')
-    		->with('success', sprintf('New list named %s has been created.', $list->name));
+        return redirect()
+            ->route('admin.list')
+            ->with('success', sprintf('New list named %s has been created.', $list->name));
     }
 
     /**
-     * Show form to edit existing list
-     * 
-     * @param  integer $id
-     * @return void  
+     * Show form to edit existing list.
+     *
+     * @param int $id
+     *
+     * @return void
      */
     public function getEdit($id = null)
     {
@@ -84,10 +87,11 @@ class ListController extends Controller
     }
 
     /**
-     * Save to database
-     * 
-     * @param  EditListRequest $request
-     * @return void                
+     * Save to database.
+     *
+     * @param EditListRequest $request
+     *
+     * @return void
      */
     public function postEdit(EditListRequest $request)
     {
@@ -95,7 +99,7 @@ class ListController extends Controller
             ->whereId($request->id)
             ->firstOrFail();
 
-        $list->name = $request->name; 
+        $list->name = $request->name;
         $list->description = $request->description;
 
         if ($list->save() === true) {
@@ -109,10 +113,11 @@ class ListController extends Controller
     }
 
     /**
-     * Delete single row of list
-     * 
-     * @param  integer $id
-     * @return void 
+     * Delete single row of list.
+     *
+     * @param int $id
+     *
+     * @return void
      */
     public function getDelete($id = null)
     {

@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
-use Carbon\Carbon;
 use App\NewsletterList;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class NewsletterListTableSeeder extends Seeder
 {
@@ -15,17 +14,17 @@ class NewsletterListTableSeeder extends Seeder
      */
     public function run()
     {
-    	$list = new NewsletterList;
+        $list = new NewsletterList();
         $user = User::whereGroup('user')->first();
 
         DB::table($list->getTable())->insert([
-            'user_id' => $user->id,
-        	'slug' => 'default',
-        	'name' => 'Default',
-        	'description' => 'Default list for all subscribers.',
-        	'is_default' => true,
-        	'created_at' => Carbon::now(),
-        	'updated_at' => Carbon::now()
+            'user_id'     => $user->id,
+            'slug'        => 'default',
+            'name'        => 'Default',
+            'description' => 'Default list for all subscribers.',
+            'is_default'  => true,
+            'created_at'  => Carbon::now(),
+            'updated_at'  => Carbon::now(),
         ]);
     }
 }

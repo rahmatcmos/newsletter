@@ -6,26 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class NewsletterList extends Model
 {
-	/**
-	 * Set table name
-	 * 
-	 * @var string
-	 */
+    /**
+     * Set table name.
+     *
+     * @var string
+     */
     protected $table = 'newsletter_lists';
 
     /**
-     * Has many subscribers
-     * 
+     * Has many subscribers.
+     *
      * @return object
      */
     public function subscribers()
     {
-    	return $this->hasMany(\App\NewsletterSubscriber::class, 'newsletter_list_id');
+        return $this->hasMany(\App\NewsletterSubscriber::class, 'newsletter_list_id');
     }
 
     /**
-     * Lists belongs to Users
-     * 
+     * Lists belongs to Users.
+     *
      * @return object
      */
     public function user()
@@ -34,17 +34,18 @@ class NewsletterList extends Model
     }
 
     /**
-     * Filter newsleter list
-     * 
-     * @param  object $query
+     * Filter newsleter list.
+     *
+     * @param object $query
+     *
      * @return object
      */
     public function scopeFilter($query)
     {
-    	if (\Auth::user()->group === 'user') {
-    		$query->where('user_id', \Auth::id());
-    	}
+        if (\Auth::user()->group === 'user') {
+            $query->where('user_id', \Auth::id());
+        }
 
-    	return $query;
+        return $query;
     }
 }
