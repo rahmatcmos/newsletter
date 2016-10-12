@@ -62,11 +62,15 @@ class ListController extends Controller
         $list->name = $request->name;
         $list->description = $request->description;
         $list->is_default = false;
-        $list->save();
+        $saved = $list->save();
 
-        return redirect()
-            ->route('admin.list')
-            ->with('success', sprintf('New list named %s has been created.', $list->name));
+        if ($saved === true) {
+            return redirect()
+                ->route('admin.list')
+                ->with('success', sprintf('New list named %s has been created.', $list->name));
+        }
+
+        return redirect()->back();
     }
 
     /**
