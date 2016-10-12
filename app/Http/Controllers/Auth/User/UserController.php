@@ -26,6 +26,8 @@ class UserController extends Controller
     {
         abort_if(!Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
 
+        activity()->log('Viewied users index.');
+
         $users = User::orderBy('name', 'ASC')
             ->with('lists')
             ->paginate(20);
@@ -49,6 +51,11 @@ class UserController extends Controller
         else {
             $user = User::findOrFail($id);
         }
+
+        activity()->withProperties([
+            ['id' => $user->id],
+            ['name' => $user->name]
+        ])->log('Viewed user profile.');
 
         return view('auth.user.user.profile', compact('user'))
             ->withTitle($user->name);

@@ -169,6 +169,7 @@ return [
 
         'GrahamCampbell\Markdown\MarkdownServiceProvider',
         Laravel\Scout\ScoutServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
 
         /*
          * Application Service Providers...
