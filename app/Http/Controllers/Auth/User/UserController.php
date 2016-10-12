@@ -37,24 +37,23 @@ class UserController extends Controller
     }
 
     /**
-     * Show user profile by logged session or provider id
-     * 
-     * @param  integer $id
-     * 
-     * @return void    
+     * Show user profile by logged session or provider id.
+     *
+     * @param int $id
+     *
+     * @return void
      */
     public function getProfile($id = null)
     {
         if (empty($id)) {
             $user = Auth::user();
-        }
-        else {
+        } else {
             $user = User::findOrFail($id);
         }
 
         activity()->withProperties([
             ['id' => $user->id],
-            ['name' => $user->name]
+            ['name' => $user->name],
         ])->log('Viewed user profile.');
 
         return view('auth.user.user.profile', compact('user'))
