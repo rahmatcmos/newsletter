@@ -46,6 +46,12 @@ class NewsletterList extends Model
             $query->where('user_id', \Auth::id());
         }
 
+        if (\Auth::user()->group === 'admin') {
+            $query->when(request('user'), function($query){
+                return $query->whereUserId(request('user'));
+            });
+        }
+
         return $query;
     }
 }
