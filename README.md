@@ -1,4 +1,7 @@
 # Newsletter
+
+[![StyleCI](https://styleci.io/repos/70211763/shield?branch=master)](https://styleci.io/repos/70211763)
+
 Simple newsletter app using Laravel framework.
 
 ![Screenshot](https://s16.postimg.org/tzvo9b7ut/Screenshot_from_2016_10_08_14_57_19.png)
