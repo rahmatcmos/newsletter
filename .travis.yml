@@ -1,0 +1,10 @@
+language: php
+sudo: required
+dist: trusty
+group: edge
+php:
+  - 7.0
+  - nigthly
+before_script:
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
