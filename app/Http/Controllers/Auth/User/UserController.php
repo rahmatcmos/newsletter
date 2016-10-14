@@ -52,10 +52,8 @@ class UserController extends Controller
             $user = User::findOrFail($id);
         }
 
-        activity()->withProperties([
-            ['id' => $user->id],
-            ['name' => $user->name],
-        ])->log('Viewed user profile.');
+        activity()->performedOn($user)
+            ->log('Viewed user profile.');
 
         $activities = Activity::whereCauserId($user->id)
             ->orderBy('created_at', 'DESC')
