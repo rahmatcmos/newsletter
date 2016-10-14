@@ -42,16 +42,6 @@ class NewsletterList extends Model
      */
     public function scopeFilter($query)
     {
-        if (\Auth::user()->group === 'user') {
-            $query->where('user_id', \Auth::id());
-        }
-
-        if (\Auth::user()->group === 'admin') {
-            $query->when(request('user'), function ($query) {
-                return $query->whereUserId(request('user'));
-            });
-        }
-
         return $query;
     }
 }
