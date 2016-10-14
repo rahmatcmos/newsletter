@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 class NewsletterSubscriber extends Model
 {
@@ -40,8 +39,7 @@ class NewsletterSubscriber extends Model
         return $this->attributes['status'] = ucwords($value);
     }
 
-    public function list()
-    {
+    function list() {
         return $this->belongsTo(NewsletterList::class, 'newsletter_list_id');
     }
 
@@ -65,22 +63,10 @@ class NewsletterSubscriber extends Model
      */
     public function scopeFilter($query, $list = null)
     {
-        // filter by user
-        if (\Auth::user()->group === 'user') {
-            $query->whereHas('list', function ($query) {
-                return $query->whereUserId(\Auth::id());
-            });
-        }
-
-        // filter by user id (if provided)
-        if (!empty($list)) {
-            $query->where('newsletter_list_id', $list->id);
-        }
-
         // filter by query string (if provided)
         if (!empty(request('query'))) {
-            $query->where('name', 'LIKE', '%'.request('query').'%')
-                ->orWhere('email', 'LIKE', '%'.request('query').'%')
+            $query->where('name', 'LIKE', '%' . request('query') . '%')
+                ->orWhere('email', 'LIKE', '%' . request('query') . '%')
                 ->orWhere('status', request('query'));
         }
 

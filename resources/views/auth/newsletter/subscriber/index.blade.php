@@ -17,9 +17,9 @@
                     <a href="" class="btn btn-primary create"> <i class="fa fa-plus"></i> Create New</a>
                     <a href="" class="btn btn-default"> <i class="fa fa-file-excel-o"></i> Export</a>
                     <a href="" class="btn btn-default"> <i class="fa fa-file-excel-o"></i> Import</a>
-                    <a href="" class="btn btn-danger truncate"> <i class="fa fa-trash"></i> Truncate</a>
+                    <a href="" class="btn btn-danger truncate {{ auth()->user()->group === 'user' ? 'disabled' : '' }}"> <i class="fa fa-trash"></i> Truncate</a>
                     <hr>
-                            
+
                     <form action="{{ url()->current() }}" method="get" role="form">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon3">Search for:</span>
@@ -29,13 +29,11 @@
                             </span>
                         </div>
                     </form>
-    
+
                     <table class="table table-border">
                     	<thead>
                             <th><input type="checkbox"></th>
-                            @if (auth()->user()->group === 'admin')
-                                <th>User</th>
-                            @endif
+                            <th>User</th>
                             <th>List</th>
                     		<th>Name</th>
                     		<th>Email</th>
@@ -46,17 +44,15 @@
                     	@foreach ($subscribers as $subscriber)
                     	<tr class="{{ $subscriber->status === 'unsubscribed' ? 'text-muted' : '' }}">
                             <td><input type="checkbox" value="{{ $subscriber->id }}"></td>
-                            @if (auth()->user()->group === 'admin')
-                                <td><a href="">{{ $subscriber->list->user->name }}</a></td>
-                            @endif
-                            <td>{{ $subscriber->list->name }}</td>
+                            <td><a href="{{ route('admin.user.profile', $subscriber->list->user->id) }}">{{ $subscriber->list->user->name }}</a></td>
+                            <td><a href="{{ route('admin.subscriber', $subscriber->list->slug) }}">{{ $subscriber->list->name }}</a></td>
                     		<td>{{ $subscriber->name }}</td>
                     		<td>{{ $subscriber->email }}</td>
                     		<td><span class="label label-{{ $labels[$subscriber->status] }}">{{ $subscriber->status }}</span></td>
                             <td>{{ $subscriber->created_at->format(config('date.format')) }}</td>
                     		<td class="text-right">
                                 <a href="" class="btn btn-default" title="Send newsletter"><i class="fa fa-envelope"></i></a>
-                                <a href="" class="btn btn-default" title="Edit current subscriber"><i class="fa fa-pencil"></i></a>
+                                <a href="{{ route('admin.subscriber.edit', $subscriber->id) }}" class="btn btn-default" title="Edit current subscriber"><i class="fa fa-pencil"></i></a>
                     			<a href="{{ route('admin.subscriber.delete', $subscriber->id) }}" class="btn btn-danger delete" title="Delete current subscriber"><i class="fa fa-trash"></i></a>
                     		</td>
                     	</tr>

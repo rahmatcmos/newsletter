@@ -9,7 +9,7 @@
 | by your application. Just tell Laravel the URIs it should respond
 | to using a Closure or controller method. Build something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('index');
@@ -32,6 +32,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
         Route::get('subscribers/{list?}', 'SubscriberController@getIndex')->name('admin.subscriber');
         Route::get('subscriber/create', 'SubscriberController@getCreate')->name('admin.subscriber.create');
         Route::post('subscriber/create', 'SubscriberController@postCreate')->name('admin.subscriber.create.post');
+        Route::get('subscriber/edit/{id}', 'SubscriberController@getEdit')->name('admin.subscriber.edit');
+        Route::post('subscriber/edit', 'SubscriberController@postEdit')->name('admin.subscriber.edit.post');
         Route::get('subscriber/delete/{id}', 'SubscriberController@getDelete')->name('admin.subscriber.delete');
 
         // lists

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Newsletter;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Newsletter\CreateSubscriberRequest;
+use App\Http\Requests\Newsletter\Subscriber\EditRequest;
 use App\Mail\Newsletter\SubscribeMail;
 use App\NewsletterList;
 use App\NewsletterSubscriber;
@@ -31,20 +32,18 @@ class SubscriberController extends Controller
         }
 
         $subscribers = NewsletterSubscriber::select('id', 'newsletter_list_id', 'name', 'email', 'created_at', 'status')
-            ->with('list')
+            ->with('list', 'list.user')
             ->filter(isset($list) ? $list : null)
             ->sort()
             ->paginate(20);
 
-        if (Auth::user()->group === 'admin') {
-            $subscribers->load('list.user');
-        }
-
         $labels = [
-            'Pending'      => 'warning',
-            'Subscribed'   => 'success',
+            'Pending' => 'warning',
+            'Subscribed' => 'success',
             'Unsubscribed' => 'danger',
         ];
+
+        activity()->log('Viewed subscribers index.');
 
         return view('auth.newsletter.subscriber.index', compact('subscribers', 'labels', 'lists'))
             ->withTitle(sprintf('Subscribers (%d)', $subscribers->total()));
@@ -77,6 +76,10 @@ class SubscriberController extends Controller
             $subscriber->name = $request->name;
             $subscriber->save();
 
+            // save to log
+            activity()->performedOn($subscriber)
+                ->log('Created subscriber :subject.name (:subject.email)');
+
             // send email confirmation
             \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber));
 
@@ -88,12 +91,52 @@ class SubscriberController extends Controller
         if (request()->ajax()) {
             return [
                 'isSuccess' => true,
-                'message'   => 'Subscriber has been created.',
+                'message' => 'Subscriber has been created.',
             ];
         }
 
         return redirect()
             ->route('admin.subscriber');
+    }
+
+    /**
+     * Show old data and prepare for edit
+     *
+     * @param  integer $id
+     * @return void
+     */
+    public function getEdit($id)
+    {
+        $subscriber = NewsletterSubscriber::whereId($id)
+            ->firstOrFail();
+
+        return view('auth.newsletter.subscriber.edit', compact('subscriber'))
+            ->withTitle(sprintf('Edit Subscriber %s', $subscriber->name));
+    }
+
+    /**
+     * Save updated subscriber data
+     *
+     * @param  EditRequest $request
+     * @return void
+     */
+    public function postEdit(EditRequest $request)
+    {
+        $subscriber = new NewsletterSubscriber;
+        $subscriber->name = $request->name;
+        $subscriber->email = $request->email;
+        $subscriber->newsletter_list_id = $request->list;
+
+        if ($subscriber->save() === true) {
+            activity()->performedOn($subscriber)
+                ->log('Updated subscriber :subject.name (:subject.email)');
+
+            return redirect()
+                ->route('admin.subscriber')
+                ->with('success', sprintf('Subscriber %s has been updated.', $subscriber->name));
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -111,7 +154,15 @@ class SubscriberController extends Controller
             ->whereId($id)
             ->firstOrFail();
 
+        $oldSubscriber = [
+            'email' => $subscriber->email,
+            'name' => $subscriber->name,
+        ];
+
         if ($subscriber->delete() === true) {
+            activity()->withProperties($oldSubscriber)
+                ->log('Deleted subscriber :properties.name (:properties.email)');
+
             return redirect()
                 ->back()
                 ->with('success', sprintf('Subscriber %s has been deleted.', $subscriber->email));

@@ -19,8 +19,8 @@
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
-            'csrfToken' => csrf_token(),
-        ]); ?>
+    'csrfToken' => csrf_token(),
+]); ?>
     </script>
 </head>
 <body>
@@ -56,7 +56,7 @@
                             <li><a href="{{ route('index') }}">Home</a></li>
                             <li><a href="{{ route('about') }}">About</a></li>
                             <li><a href="{{ route('newsletter.index') }}">Newsletter</a></li>
-                            <li><a href="{{ url('/login') }}">Login</a></li>
+                            <li><a href="{{ url('/login') }}"z>Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             <li><a href="{{ route('home') }}">Home</a></li>

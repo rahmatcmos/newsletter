@@ -56,7 +56,7 @@
 .profile-userbuttons .btn:last-child {
   margin-right: 0px;
 }
-    
+
 .profile-usermenu {
   margin-top: 30px;
 }
@@ -157,7 +157,6 @@
                                 <thead>
                                     <th>Action</th>
                                     <th>Description</th>
-                                    <th>Property</th>
                                     <th>Date</th>
                                 </thead>
                                 <tbody>
@@ -165,7 +164,6 @@
                                         <tr>
                                             <td>{{ $activity->log_name }}</td>
                                             <td>{{ $activity->description }}</td>
-                                            <td>{{ $activity->properties }}</td>
                                             <td>{{ $activity->created_at->format(config('date.format')) }}</td>
                                         </tr>
                                     @endforeach
