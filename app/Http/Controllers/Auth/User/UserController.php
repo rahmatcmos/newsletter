@@ -9,6 +9,7 @@ use App\Mail\User\DeleteMail;
 use App\User;
 use Auth;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Activitylog\Models\Activity;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -56,7 +57,11 @@ class UserController extends Controller
             ['name' => $user->name],
         ])->log('Viewed user profile.');
 
-        return view('auth.user.user.profile', compact('user'))
+        $activities = Activity::whereCauserId($user->id)
+            ->orderBy('created_at', 'DESC')
+            ->paginate(20);
+
+        return view('auth.user.user.profile', compact('user', 'activities'))
             ->withTitle($user->name);
     }
 

@@ -153,7 +153,26 @@
 						</div>
 						<div class="col-md-8">
 							<h3>Activities</h3>
-							<div class="alert alert-info">No activity at this moment.</div>
+                            <table class="table">
+                                <thead>
+                                    <th>Action</th>
+                                    <th>Description</th>
+                                    <th>Property</th>
+                                    <th>Date</th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($activities as $activity)
+                                        <tr>
+                                            <td>{{ $activity->log_name }}</td>
+                                            <td>{{ $activity->description }}</td>
+                                            <td>{{ $activity->properties }}</td>
+                                            <td>{{ $activity->created_at->format(config('date.format')) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            {{ $activities->links() }}
 						</div>
 					</div>
                 </div>
