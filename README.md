@@ -8,7 +8,7 @@ Simple newsletter app using Laravel framework.
 
 ## Kebutuhan Sistem
 
-- PHP >= 5.6.4
+- PHP >= 7.0
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
