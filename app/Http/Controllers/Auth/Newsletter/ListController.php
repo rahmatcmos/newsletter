@@ -34,9 +34,9 @@ class ListController extends Controller
         if (request()->ajax()) {
             return [
                 'isSuccess' => true,
-                'content'   => $lists->map(function ($list) {
+                'content' => $lists->map(function ($list) {
                     return [
-                        'id'   => $list->id,
+                        'id' => $list->id,
                         'name' => $list->name,
                     ];
                 }),
@@ -65,6 +65,9 @@ class ListController extends Controller
         $saved = $list->save();
 
         if ($saved === true) {
+            activity()->performedOn($list)
+                ->log(sprintf('Created list %s.', $list->name));
+
             return redirect()
                 ->route('admin.list')
                 ->with('success', sprintf('New list named %s has been created.', $list->name));
@@ -82,7 +85,9 @@ class ListController extends Controller
      */
     public function getEdit($id = null)
     {
-        $list = NewsletterList::whereUserId(Auth::id())
+        $list = NewsletterList::when(Auth::user()->group === 'user', function ($query) {
+            return $query->whereUserId(Auth::id());
+        })
             ->whereId($id)
             ->firstOrFail();
 
@@ -99,7 +104,9 @@ class ListController extends Controller
      */
     public function postEdit(EditListRequest $request)
     {
-        $list = NewsletterList::whereUserId(Auth::id())
+        $list = NewsletterList::when(Auth::user()->group === 'user', function ($query) {
+            return $query->whereUserId(Auth::id());
+        })
             ->whereId($request->id)
             ->firstOrFail();
 
@@ -107,6 +114,9 @@ class ListController extends Controller
         $list->description = $request->description;
 
         if ($list->save() === true) {
+            activity()->performedOn($list)
+                ->log(sprintf('Updated lists %s.', $list->name));
+
             return redirect()
                 ->route('admin.list')
                 ->with('success', sprintf('List %s has been updated.', $list->name));
@@ -125,11 +135,17 @@ class ListController extends Controller
      */
     public function getDelete($id = null)
     {
-        $list = NewsletterList::whereUserId(Auth::id())
+        $list = NewsletterList::when(Auth::user()->group === 'user', function ($query) {
+            return $query->whereUserId(Auth::id());
+        })
             ->whereId($id)
             ->firstOrFail();
 
+        $listName = $list->name;
+
         if ($list->delete() === true) {
+            activity()->log(sprintf('Deleted list %s.', $listName));
+
             return redirect()
                 ->route('admin.list')
                 ->with('success', 'List has been deleted.');
