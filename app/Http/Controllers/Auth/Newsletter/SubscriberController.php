@@ -168,4 +168,21 @@ class SubscriberController extends Controller
                 ->with('success', sprintf('Subscriber %s has been deleted.', $subscriber->email));
         }
     }
+
+    /**
+     * Delete all subscriber data performed by admin
+     *
+     * @return void
+     */
+    public function deleteTruncate()
+    {
+        $this->authorize('truncate', NewsletterSubscriber::class);
+
+        $truncated = NewsletterSubscriber::truncate();
+        activity()->log('Truncated all subscribers');
+
+        return redirect()
+            ->route('admin.subscriber')
+            ->with('success', 'All subscribers has been removed.');
+    }
 }

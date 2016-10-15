@@ -35,6 +35,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
         Route::get('subscriber/edit/{id}', 'SubscriberController@getEdit')->name('admin.subscriber.edit');
         Route::post('subscriber/edit', 'SubscriberController@postEdit')->name('admin.subscriber.edit.post');
         Route::get('subscriber/delete/{id}', 'SubscriberController@getDelete')->name('admin.subscriber.delete');
+        Route::delete('subscriber/truncate', 'SubscriberController@deleteTruncate')->name('admin.subscriber.truncate');
 
         // lists
         Route::get('lists', 'ListController@getIndex')->name('admin.list');

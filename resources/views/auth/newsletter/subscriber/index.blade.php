@@ -17,7 +17,8 @@
                     <a href="" class="btn btn-primary create"> <i class="fa fa-plus"></i> Create New</a>
                     <a href="" class="btn btn-default"> <i class="fa fa-file-excel-o"></i> Export</a>
                     <a href="" class="btn btn-default"> <i class="fa fa-file-excel-o"></i> Import</a>
-                    <a href="" class="btn btn-danger truncate {{ auth()->user()->group === 'user' ? 'disabled' : '' }}"> <i class="fa fa-trash"></i> Truncate</a>
+                    <a href="" class="btn btn-danger truncate {{ (auth()->user()->group === 'user' OR $subscribers->total() <= 0) ? 'disabled' : '' }}"> <i class="fa fa-trash"></i> Truncate</a>
+
                     <hr>
 
                     <form action="{{ url()->current() }}" method="get" role="form">
@@ -77,20 +78,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Warning</h4>
             </div>
-            <div class="modal-body">
-                <p>Are you sure wan to delete all items? This action can't be undone.</p>
-                <p>Please insert your password before take this action.</p>
-                <form action="">
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" id="confirm-password">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger"> <i class="fa fa-trash"></i> Truncate Subscribers</button>
-            </div>
+            <form action="{{ route('admin.subscriber.truncate') }}" method="post" id="form-truncate">
+                {{ csrf_field() }}
+                {{ method_field('delete') }}
+
+                <div class="modal-body">
+                    <p>Are you sure wan to delete all items? This action can't be undone.</p>
+                    <p>Please insert your password before take this action.</p>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" class="form-control" id="confirm-password">
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> Truncate Subscribers</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
