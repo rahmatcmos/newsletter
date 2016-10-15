@@ -79,3 +79,8 @@ Route::group(['prefix' => 'newsletter'], function () {
     Route::get('unsubscribe', 'NewsletterController@getUnsubscribe')->name('newsletter.unsubscribe');
     Route::post('unsubscribe', 'NewsletterController@postReason')->name('newsletter.reason.post');
 });
+
+Route::group(['prefix' => 'contact'], function () {
+    Route::get('/', 'ContactController@getIndex')->name('contact');
+    Route::post('/', 'ContactController@postSend')->name('contact.post');
+});
