@@ -51,8 +51,8 @@ class GlobalController extends Controller
         foreach ($request->except('_token', '_method') as $property => $value) {
             // prepare for database
             $settings[] = [
-                'key' => $property,
-                'value' => $value,
+                'key'        => $property,
+                'value'      => $value,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -63,7 +63,7 @@ class GlobalController extends Controller
         $message = 'All settings has been saved.';
         if (request()->ajax()) {
             return [
-                'status' => true,
+                'status'  => true,
                 'message' => $message,
             ];
         }
@@ -74,7 +74,7 @@ class GlobalController extends Controller
     }
 
     /**
-     * Test email based on provided settings
+     * Test email based on provided settings.
      *
      * @return mixed
      */
@@ -91,7 +91,7 @@ class GlobalController extends Controller
             $message = 'Failed to send email based on provided settings.';
             if (request()->ajax()) {
                 return [
-                    'status' => false,
+                    'status'  => false,
                     'message' => $message,
                 ];
             }

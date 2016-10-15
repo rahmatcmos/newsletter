@@ -38,7 +38,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all subscribers belongs to user via list
+     * Get all subscribers belongs to user via list.
      *
      * @return object
      */

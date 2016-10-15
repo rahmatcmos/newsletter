@@ -13,8 +13,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         \App\NewsletterSubscriber::class => \App\Policies\Newsletter\SubscriberPolicy::class,
-        \App\Setting::class => \App\Policies\SettingPolicy::class,
-        \App\User::class => \App\Policies\UserPolicy::class,
+        \App\Setting::class              => \App\Policies\SettingPolicy::class,
+        \App\User::class                 => \App\Policies\UserPolicy::class,
     ];
 
     /**
