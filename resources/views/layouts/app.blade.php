@@ -11,7 +11,7 @@
     <title>{{ $title or config('app.name') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('component/font-awesome/css/font-awesome.min.css') }}">
 
     @stack('css')
@@ -53,11 +53,12 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('index') }}">Home</a></li>
-                            <li><a href="{{ route('about') }}">About</a></li>
-                            <li><a href="{{ route('newsletter.index') }}">Newsletter</a></li>
-                            <li><a href="{{ url('/login') }}"z>Login</a></li>
-                            <li><a href="{{ url('/register') }}">Register</a></li>
+                            <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('index') }}">Home</a></li>
+                            <li class="{{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">About</a></li>
+                            <li class="{{ request()->is('newsletter') ? 'active' : '' }}"><a href="{{ route('newsletter.index') }}">Newsletter</a></li>
+                            <li class="{{ request()->is('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Contact</a></li>
+                            <li class="{{ request()->is('register') ? 'active' : '' }}"><a href="{{ url('/register') }}">Register</a></li>
+                            <li class="{{ request()->is('login') ? 'active' : '' }}"><p class="navbar-btn"><a href="{{ url('/login') }}" class="btn btn-primary"><i class="fa fa-lock"></i> Login</a></p></li>
                         @else
                             <li><a href="{{ route('home') }}">About</a></li>
                             <li><a href="{{ route('admin.list') }}">Lists</a></li>
