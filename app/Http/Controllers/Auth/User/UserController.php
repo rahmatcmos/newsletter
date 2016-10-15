@@ -8,7 +8,6 @@ use App\Mail\User\CreateMail;
 use App\Mail\User\DeleteMail;
 use App\User;
 use Auth;
-use Illuminate\Support\Facades\Gate;
 use Spatie\Activitylog\Models\Activity;
 
 /**
@@ -25,7 +24,7 @@ class UserController extends Controller
      */
     public function getIndex()
     {
-        abort_if(!Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
+        $this->authorize('index', User::class);
 
         activity()->log('Viewied users index.');
 
@@ -72,7 +71,7 @@ class UserController extends Controller
      */
     public function getCreate()
     {
-        abort_if(!Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
+        $this->authorize('create', User::class);
 
         return view('auth.user.user.create')
             ->withTitle('Create New User');
@@ -87,7 +86,7 @@ class UserController extends Controller
      */
     public function postCreate(CreateRequest $request)
     {
-        abort_if(!Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
+        $this->authorize('create', User::class);
 
         \DB::transaction(function () use ($request) {
             $user = new User();
@@ -119,11 +118,9 @@ class UserController extends Controller
      */
     public function getDelete($id = null)
     {
-        abort_if(!Gate::allows('users', Auth::user()), 403, 'This action is unauthorized.');
-
-        abort_if(\Auth::id() == $id, 403, 'You can\'t delete yourself.');
-
         $user = User::findOrFail($id);
+
+        $this->authorize('delete', $user);
 
         \DB::transaction(function () use ($user) {
             // send email notification first
