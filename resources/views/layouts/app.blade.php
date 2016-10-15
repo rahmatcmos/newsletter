@@ -59,7 +59,7 @@
                             <li><a href="{{ url('/login') }}"z>Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
-                            <li><a href="{{ route('home') }}">Home</a></li>
+                            <li><a href="{{ route('home') }}">About</a></li>
                             <li><a href="{{ route('admin.list') }}">Lists</a></li>
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
