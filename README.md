@@ -6,6 +6,8 @@ Simple newsletter app using Laravel framework.
 
 ![Screenshot](https://s16.postimg.org/tzvo9b7ut/Screenshot_from_2016_10_08_14_57_19.png)
 
+Demo aplikasi dapat dilihat pada tautan [](http://nawala.laravel.web.id).
+
 ## Kebutuhan Sistem
 
 - PHP >= 7.0
