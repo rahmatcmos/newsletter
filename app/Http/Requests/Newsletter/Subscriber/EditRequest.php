@@ -24,10 +24,10 @@ class EditRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|exists:subscribers,id',
-            'name' => 'required|max:50',
+            'id'    => 'required|exists:subscribers,id',
+            'name'  => 'required|max:50',
             'email' => 'required|email|max:100',
-            'list' => 'required|exists:newsletter_lists,id',
+            'list'  => 'required|exists:newsletter_lists,id',
         ];
     }
 }

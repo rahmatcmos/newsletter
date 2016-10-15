@@ -39,7 +39,8 @@ class NewsletterSubscriber extends Model
         return $this->attributes['status'] = ucwords($value);
     }
 
-    function list() {
+    public function list()
+    {
         return $this->belongsTo(NewsletterList::class, 'newsletter_list_id');
     }
 
@@ -65,8 +66,8 @@ class NewsletterSubscriber extends Model
     {
         // filter by query string (if provided)
         if (!empty(request('query'))) {
-            $query->where('name', 'LIKE', '%' . request('query') . '%')
-                ->orWhere('email', 'LIKE', '%' . request('query') . '%')
+            $query->where('name', 'LIKE', '%'.request('query').'%')
+                ->orWhere('email', 'LIKE', '%'.request('query').'%')
                 ->orWhere('status', request('query'));
         }
 

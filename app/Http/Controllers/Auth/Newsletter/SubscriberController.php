@@ -38,8 +38,8 @@ class SubscriberController extends Controller
             ->paginate(20);
 
         $labels = [
-            'Pending' => 'warning',
-            'Subscribed' => 'success',
+            'Pending'      => 'warning',
+            'Subscribed'   => 'success',
             'Unsubscribed' => 'danger',
         ];
 
@@ -91,7 +91,7 @@ class SubscriberController extends Controller
         if (request()->ajax()) {
             return [
                 'isSuccess' => true,
-                'message' => 'Subscriber has been created.',
+                'message'   => 'Subscriber has been created.',
             ];
         }
 
@@ -100,9 +100,10 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Show old data and prepare for edit
+     * Show old data and prepare for edit.
      *
-     * @param  integer $id
+     * @param int $id
+     *
      * @return void
      */
     public function getEdit($id)
@@ -115,14 +116,15 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Save updated subscriber data
+     * Save updated subscriber data.
      *
-     * @param  EditRequest $request
+     * @param EditRequest $request
+     *
      * @return void
      */
     public function postEdit(EditRequest $request)
     {
-        $subscriber = new NewsletterSubscriber;
+        $subscriber = new NewsletterSubscriber();
         $subscriber->name = $request->name;
         $subscriber->email = $request->email;
         $subscriber->newsletter_list_id = $request->list;
@@ -156,7 +158,7 @@ class SubscriberController extends Controller
 
         $oldSubscriber = [
             'email' => $subscriber->email,
-            'name' => $subscriber->name,
+            'name'  => $subscriber->name,
         ];
 
         if ($subscriber->delete() === true) {
@@ -170,7 +172,7 @@ class SubscriberController extends Controller
     }
 
     /**
-     * Delete all subscriber data performed by admin
+     * Delete all subscriber data performed by admin.
      *
      * @return void
      */

@@ -13,8 +13,9 @@ class SettingPolicy
     /**
      * Determine whether the user can view the setting.
      *
-     * @param  App\User  $user
-     * @param  App\Setting  $setting
+     * @param App\User    $user
+     * @param App\Setting $setting
+     *
      * @return mixed
      */
     public function view(User $user)
@@ -25,7 +26,8 @@ class SettingPolicy
     /**
      * Determine whether the user can create settings.
      *
-     * @param  App\User  $user
+     * @param App\User $user
+     *
      * @return mixed
      */
     public function create(User $user)
@@ -36,8 +38,9 @@ class SettingPolicy
     /**
      * Determine whether the user can update the setting.
      *
-     * @param  App\User  $user
-     * @param  App\Setting  $setting
+     * @param App\User    $user
+     * @param App\Setting $setting
+     *
      * @return mixed
      */
     public function update(User $user, Setting $setting)
@@ -48,8 +51,9 @@ class SettingPolicy
     /**
      * Determine whether the user can delete the setting.
      *
-     * @param  App\User  $user
-     * @param  App\Setting  $setting
+     * @param App\User    $user
+     * @param App\Setting $setting
+     *
      * @return mixed
      */
     public function delete(User $user, Setting $setting)
@@ -58,10 +62,11 @@ class SettingPolicy
     }
 
     /**
-     * Only admin group can test email
+     * Only admin group can test email.
      *
-     * @param  User   $user
-     * @return boolean
+     * @param User $user
+     *
+     * @return bool
      */
     public function email(User $user)
     {
