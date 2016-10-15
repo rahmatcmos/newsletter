@@ -24,10 +24,10 @@ Simple newsletter app using Laravel framework.
 
 - Clone repositori untuk mendapatkan update terbaru.
 - Ubah hak akses direktori ```storage``` dan ```bootstrap/cache``` agar dapat ditulisi oleh aplikasi.
-- Jalankan perintah ```composer update``` untuk memperbarui package dan framework.
+- Jalankan perintah ```composer update``` untuk memperbarui framework dan librari dependensi. Khusus dengan pengaturan email dapat diubah pada aplikasi melalui URI ```setting```.
 - Salin berkas ```.env.example``` menjadi ```.env``` dan ubah beberapa pengaturan di dalamnya sesuai dengan mesin yang digunakan.
 - Jalankan perintah ```php artisan key:generate``` untuk membuat key baru.
-- Jalankan perintah ```php artisan migrate``` dan ```php artisan db:seed``` untuk menjalankan migration dan menambahkan data dummy.
+- Jalankan perintah ```php artisan migrate``` untuk menjalankan migrations.
 - Jalankan built-in server dengan perintah ```php artisan serve``` atau ```php -S localhost:8000```.
 - Akses URL ```localhost:8000``` melalui peramban.
 
@@ -45,4 +45,4 @@ Data yang otomatis dibuat adalah:
 - Unsubscribe reason
 - Newsletter template
 
-Default login ke aplikasi dapat menggunakan username ```admin@mail.com``` dan password ```admin```
+Default login ke aplikasi dengan role admin dapat menggunakan username ```admin@mail.com``` dan password ```admin```. Sedangkan untuk login dengan role user dapat menggunakan username ```user@email.com``` dan password ```user```.
