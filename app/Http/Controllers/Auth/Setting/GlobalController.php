@@ -8,7 +8,6 @@ use App\Setting;
 use Auth;
 use Carbon\Carbon;
 use DB;
-use Illuminate\Support\Facades\Gate;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -24,9 +23,12 @@ class GlobalController extends Controller
      */
     public function getIndex()
     {
-        abort_if(!Gate::allows('settings', Auth::user()), 403, 'This action is unauthorized.');
+        $this->authorize('view', Setting::class);
 
-        return view('auth.setting.global.index', compact('settings'))
+        // list of supported drivers
+        $drivers = Setting::getDrivers();
+
+        return view('auth.setting.global.index', compact('drivers'))
             ->withTitle('Setting');
     }
 
@@ -37,7 +39,7 @@ class GlobalController extends Controller
      */
     public function postCreate(SaveRequest $request)
     {
-        abort_if(!Gate::allows('settings', Auth::user()), 403, 'This action is unauthorized.');
+        $this->authorize('create', Setting::class);
 
         $setting = new Setting();
 
@@ -49,8 +51,8 @@ class GlobalController extends Controller
         foreach ($request->except('_token', '_method') as $property => $value) {
             // prepare for database
             $settings[] = [
-                'key'        => $property,
-                'value'      => $value,
+                'key' => $property,
+                'value' => $value,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -58,8 +60,16 @@ class GlobalController extends Controller
 
         DB::table($setting->getTable())->insert($settings);
 
+        $message = 'All settings has been saved.';
+        if (request()->ajax()) {
+            return [
+                'status' => true,
+                'message' => $message,
+            ];
+        }
+
         return redirect()
             ->back()
-            ->with('success', 'All settings has been saved.');
+            ->with('success', $message);
     }
 }

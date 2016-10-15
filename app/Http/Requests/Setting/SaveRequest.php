@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Setting;
 
+use App\Setting;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SaveRequest extends FormRequest
@@ -23,8 +24,20 @@ class SaveRequest extends FormRequest
      */
     public function rules()
     {
+        $drivers = implode(',', array_keys(Setting::getDrivers()));
+
         return [
             'app_name' => 'required',
+            'app_email' => 'required|email',
+            'mail_driver' => 'required',
+
+            // drivers
+            'mail_driver' => 'required:in' . $drivers,
+            'mail_host' => 'required',
+
+            // sender
+            'mail_from_name' => 'required|string',
+            'mail_from_address' => 'required|email',
         ];
     }
 }

@@ -14,6 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         \App\NewsletterSubscriber::class => \App\Policies\Newsletter\SubscriberPolicy::class,
+        \App\Setting::class => \App\Policies\SettingPolicy::class,
     ];
 
     /**
@@ -27,11 +28,6 @@ class AuthServiceProvider extends ServiceProvider
 
         // define gate for users
         Gate::define('users', function ($user) {
-            return $user->group === 'admin';
-        });
-
-        // define gate for global config
-        Gate::define('settings', function ($user) {
             return $user->group === 'admin';
         });
     }
