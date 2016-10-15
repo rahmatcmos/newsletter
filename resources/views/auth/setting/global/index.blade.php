@@ -107,7 +107,7 @@
 
 	                    <div class="form-group">
 	                    	<button type="submit" class="btn btn-primary">Save Settings</button>
-	                    	<button type="button" class="btn btn-default">Test Email</button>
+	                    	<button type="button" class="btn btn-default test-email">Test Email</button>
 	                    	<i class="fa fa-spinner fa-spin loader"></i>
 	                    </div>
 
@@ -117,12 +117,44 @@
         </div>
     </div>
 </div>
+
+<div id="modal-email" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Email tester</h4>
+            </div>
+            <form action="{{ route('admin.setting.email') }}" method="post" id="form-truncate">
+                {{ csrf_field() }}
+                {{ method_field('post') }}
+
+                <div class="modal-body">
+                    <p>Email will be send to address below</p>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" name="email" class="form-control" id="confirm-password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"> <i class="fa fa-envelope"></i> Send Email</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('script')
 	<script>
 		$(function(){
 			$('.loader, .response').hide()
+
+			$('.test-email').click(function(){
+				$('#modal-email').modal()
+				return false
+			})
 
 			$('#form-setting').submit(function(){
 				$('.loader').show()

@@ -56,4 +56,15 @@ class SettingPolicy
     {
         //
     }
+
+    /**
+     * Only admin group can test email
+     *
+     * @param  User   $user
+     * @return boolean
+     */
+    public function email(User $user)
+    {
+        return $user->group === 'admin';
+    }
 }

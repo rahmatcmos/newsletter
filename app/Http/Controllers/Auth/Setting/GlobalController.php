@@ -72,4 +72,46 @@ class GlobalController extends Controller
             ->back()
             ->with('success', $message);
     }
+
+    /**
+     * Test email based on provided settings
+     *
+     * @return mixed
+     */
+    public function postEmail()
+    {
+        $this->authorize('email', Setting::class);
+
+        $dd = \Mail::send('email.setting.test', [], function ($mail) {
+            $mail->to(request('email'))
+                ->subject(sprintf('Test Email from %s', config('app.name')));
+        });
+
+        if (!empty(\Mail::failures())) {
+            $message = 'Failed to send email based on provided settings.';
+            if (request()->ajax()) {
+                return [
+                    'status' => false,
+                    'message' => $message,
+                ];
+            }
+
+            return redirect()
+                ->route('admin.setting')
+                ->with('error', $message);
+        }
+
+        $message = 'Congrats! Email has been sent using provider settings.';
+
+        if (request()->ajax()) {
+            return [
+                'success' => true,
+                'message' => $message,
+            ];
+        }
+
+        return redirect()
+            ->route('admin.setting')
+            ->with('success', $message);
+    }
 }
