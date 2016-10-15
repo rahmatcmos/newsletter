@@ -50,6 +50,8 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    {{ $lists->appends(['user' => request('user')])->links() }}
                 </div>
             </div>
         </div>

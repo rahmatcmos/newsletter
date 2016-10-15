@@ -42,6 +42,10 @@ class NewsletterList extends Model
      */
     public function scopeFilter($query)
     {
+        $query->when(request('user'), function ($query) {
+            return $query->whereUserId(request('user'));
+        });
+
         return $query;
     }
 }

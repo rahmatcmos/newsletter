@@ -34,9 +34,9 @@ class ListController extends Controller
         if (request()->ajax()) {
             return [
                 'isSuccess' => true,
-                'content'   => $lists->map(function ($list) {
+                'content' => $lists->map(function ($list) {
                     return [
-                        'id'   => $list->id,
+                        'id' => $list->id,
                         'name' => $list->name,
                     ];
                 }),
