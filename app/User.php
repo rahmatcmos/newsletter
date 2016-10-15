@@ -36,4 +36,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\NewsletterList::class, 'user_id');
     }
+
+    /**
+     * Get all subscribers belongs to user via list
+     *
+     * @return object
+     */
+    public function subscribers()
+    {
+        return $this->hasManyThrough(\App\NewsletterSubscriber::class, \App\NewsletterList::class);
+    }
 }

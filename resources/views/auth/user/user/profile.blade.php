@@ -130,8 +130,8 @@
 
 								@if ($user->group === 'user')
 									<div class="profile-userbuttons">
-										<a href="{{ route('admin.list', ['user' => $user->id]) }}" class="btn btn-default btn-sm">Lists</a>
-										<a href="{{ route('admin.list', ['user' => $user->id]) }}" class="btn btn-default btn-sm">Subscribers</a>
+										<a href="{{ route('admin.list', ['user' => $user->id]) }}" class="btn btn-default btn-sm">Lists ({{ $user->lists->count() }})</a>
+										<a href="{{ route('admin.list', ['user' => $user->id]) }}" class="btn btn-default btn-sm">Subscribers ({{ $user->subscribers->count() }})</a>
 									</div>
 								@endif
 
