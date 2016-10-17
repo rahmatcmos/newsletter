@@ -7,71 +7,87 @@ use App\Mail\Newsletter\SubscribeConfirmMail;
 use App\Mail\Newsletter\SubscribeMail;
 use App\NewsletterSubscriber;
 
-class NewsletterController extends Controller
-{
-    public function getIndex()
-    {
-        return view('newsletter.index')
-            ->withTitle('Subscribe Newsletter');
-    }
+/**
+ * @author Yugo <dedy.yugo.purwanto>
+ * @link https://github.com/arvernester/newsletter
+ */
+class NewsletterController extends Controller {
 
-    public function postSubscribe(SubscribeRequest $request)
-    {
-        \DB::transaction(function () use ($request) {
-            // get default list
-            $list = \App\NewsletterList::whereIsDefault(true)->first();
-            abort_if(empty($list), 404, 'No default list defined.');
+	/**
+	 * Show subscribe form
+	 *
+	 * @return void
+	 */
+	public function getIndex() {
+		return view('newsletter.index')
+			->withTitle('Subscribe Newsletter');
+	}
 
-            // save to database
-            $subscriber = NewsletterSubscriber::FirstOrNew(['email' => $request->email]);
-            $subscriber->newsletter_list_id = $list->id;
-            $subscriber->name = $request->name;
-            $subscriber->status = 'pending';
-            $subscriber->save();
+	/**
+	 * Save to database as pending subscription
+	 *
+	 * @param  SubscribeRequest $request
+	 * @return void
+	 */
+	public function postSubscribe(SubscribeRequest $request) {
+		\DB::transaction(function () use ($request) {
+			// get default list
+			$list = \App\NewsletterList::whereIsDefault(true)->first();
+			abort_if(empty($list), 404, 'No default list defined.');
 
-            // send email confirmation
-            \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber));
-        });
+			// save to database
+			$subscriber = NewsletterSubscriber::FirstOrNew(['email' => $request->email]);
+			$subscriber->newsletter_list_id = $list->id;
+			$subscriber->name = $request->name;
+			$subscriber->status = 'pending';
+			$subscriber->save();
 
-        return redirect()
-            ->route('newsletter.index')
-            ->with('success', 'Thank you for registering our newsletter. Please check your inbox.');
-    }
+			// send email confirmation
+			\Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber));
+		});
 
-    public function getConfirm()
-    {
-        $email = \Crypt::decrypt(request('key'));
-        abort_if(empty($email), 404, 'Email address not found.');
+		return redirect()
+			->route('newsletter.index')
+			->with('success', 'Thank you for registering our newsletter. Please check your inbox.');
+	}
 
-        // find email
-        $subscriber = NewsletterSubscriber::whereEmail($email)->first();
-        if (empty($subscriber)) {
-            return redirect()
-                ->route('newsletter.index')
-                ->with('error', 'Invalid email address.');
-        }
+	/**
+	 * Confirm status as subscriber
+	 *
+	 * @return void
+	 */
+	public function getConfirm() {
+		$email = \Crypt::decrypt(request('key'));
+		abort_if(empty($email), 404, 'Email address not found.');
 
-        $subscriber->status = 'subscribed';
-        $subscriber->save();
+		// find email
+		$subscriber = NewsletterSubscriber::whereEmail($email)->first();
+		if (empty($subscriber)) {
+			return redirect()
+				->route('newsletter.index')
+				->with('error', 'Invalid email address.');
+		}
 
-        // send email notification
-        \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeConfirmMail($subscriber));
+		$subscriber->status = 'subscribed';
+		$subscriber->save();
 
-        return redirect()
-            ->route('newsletter.index')
-            ->with('success', 'You has been subscribed newsletter.');
-    }
+		// send email notification
+		\Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeConfirmMail($subscriber));
 
-    /**
-     * Show dissapointed text and reason form.
-     *
-     * @return void
-     */
-    public function getUnsubscribe()
-    {
-        $reasons = \App\NewsletterReason::all();
+		return redirect()
+			->route('newsletter.index')
+			->with('success', 'You has been subscribed newsletter.');
+	}
 
-        return view('newsletter.unsubscribe', compact('reasons'))
-            ->withTitle('Unsubscribe Newsletter');
-    }
+	/**
+	 * Show dissapointed text and reason form.
+	 *
+	 * @return void
+	 */
+	public function getUnsubscribe() {
+		$reasons = \App\NewsletterReason::all();
+
+		return view('newsletter.unsubscribe', compact('reasons'))
+			->withTitle('Unsubscribe Newsletter');
+	}
 }

@@ -52,7 +52,19 @@ class ContactController extends Controller {
 			}
 		}
 
-		\Mail::raw($request->message, function ($mail) use ($request, $attachs) {
+		$data = [
+			'level' => 'success',
+			'greeting' => 'Halo,',
+			'introLines' => [
+				'Kamu mendapatkan pesan dari halaman kontak dengan subject: ' . $request->subject . '.',
+				'"' . $request->message . '"',
+			],
+			'outroLines' => [
+				'Silakan balas ini untuk menanggapi pesa tersebut.',
+			],
+		];
+
+		\Mail::send('email.default', $data, function ($mail) use ($request, $attachs) {
 			$mail->to(config('app.email'), config('app.name'))
 				->subject(sprintf('%s dari %s', $request->subject, config('app.name')));
 
