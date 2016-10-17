@@ -10,25 +10,25 @@
                 <div class="panel-body">
                     @include('partials.message')
 
-                    <form role="form" action="{{ route('contact.post') }}" method="post">
+                    <form role="form" action="{{ route('contact.post') }}" method="post" enctype="multipart/form-data" id="form-contact" data-toggle="validator">
                         {{ csrf_field() }}
                         {{ method_field('post') }}
 
                         <div class="form-group {{ $errors->has('name') ? 'has-error' : null }}">
                             <label for="name" class="control-label">Name</label>
-                            <input type="text" name="name" class="form-control" value="{{ old('name') }}">
+                            <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
 
                         <div class="form-group {{ $errors->has('email') ? 'has-error' : null }}">
                             <label for="name" class="control-label">Email Address</label>
-                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" class="form-control">
+                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" class="form-control" required>
                             <span class="help-block">{{ $errors->first('email') }}</span>
                         </div>
 
                         <div class="form-group">
                             <label for="subject" class="control-label">Subject</label>
-                            <select name="subject" id="subject" class="form-control">
+                            <select name="subject" id="subject" class="form-control" required>
                                 @foreach ($subjects as $subject)
                                     <option value="{{ $subject }}">{{ $subject }}</option>
                                 @endforeach
@@ -37,15 +37,17 @@
 
                         <div class="form-group {{ $errors->has('message') ? 'has-error' : null }}">
                             <label for="message" class="control-label">Message</label>
-                            <textarea name="message" id="message" cols="30" rows="5" class="form-control">{{ old('message') }}</textarea>
+                            <textarea name="message" id="message" cols="30" rows="5" class="form-control" required data-minlength="10">{{ old('message') }}</textarea>
+                            <span class="help-block">{{ $errors->first('message') }}</span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group {{ $errors->has('attach') ? 'has-error' : null }}">
                             <input type="file" name="attach">
+                            <span class="help-block">{{ $errors->first('attach') }}</span>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Send Message</button>
+                            <button type="submit" class="btn btn-primary send"><i class="fa fa-envelope"></i> Send Message</button>
                         </div>
                     </form>
                 </div>
@@ -54,3 +56,7 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('component/bootstrap-validator/dist/validator.min.js') }}"></script>
+@endpush
