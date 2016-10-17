@@ -34,6 +34,15 @@
 	                        		<label for="name" class="control-label">Email</label>
 	                        		<input type="email" name="app_email" value="{{ old('app_email', config('app.email')) }}" class="form-control">
 	                        	</div>
+
+	                        	<div class="form-group">
+	                        		<label for="newsletter_list" class="control-label">Default List</label>
+	                        		<select name="newsletter_list" id="list-default" class="form-control" required>
+	                        			@foreach($lists as $list)
+	                        				<option value="{{ $list->id }}">{{ $list->name }}</option>
+	                        			@endforeach
+	                        		</select>
+	                        	</div>
 	                        </div>
 	                        <div id="date" class="tab-pane fade">
 								<h4>Date and Time</h4>

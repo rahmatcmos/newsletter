@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Setting\SaveRequest;
+use App\NewsletterList;
 use App\Setting;
 use Auth;
 use Carbon\Carbon;
@@ -14,7 +15,7 @@ use DB;
  *
  * @link https://github.com/arvernester/newsletter
  */
-class GlobalController extends Controller
+class SettingController extends Controller
 {
     /**
      * Get all config and show it into forms.
@@ -28,7 +29,10 @@ class GlobalController extends Controller
         // list of supported drivers
         $drivers = Setting::getDrivers();
 
-        return view('auth.setting.global.index', compact('drivers'))
+        // get lists
+        $lists = NewsletterList::orderBy('name', 'ASC')->get();
+
+        return view('auth.setting.setting.index', compact('drivers', 'lists'))
             ->withTitle('Setting');
     }
 
@@ -51,8 +55,8 @@ class GlobalController extends Controller
         foreach ($request->except('_token', '_method') as $property => $value) {
             // prepare for database
             $settings[] = [
-                'key'        => $property,
-                'value'      => $value,
+                'key' => $property,
+                'value' => $value,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -63,7 +67,7 @@ class GlobalController extends Controller
         $message = 'All settings has been saved.';
         if (request()->ajax()) {
             return [
-                'status'  => true,
+                'status' => true,
                 'message' => $message,
             ];
         }
@@ -83,11 +87,11 @@ class GlobalController extends Controller
         $this->authorize('email', Setting::class);
 
         $data = [
-            'level'      => 'success',
-            'greeting'   => 'Halo, '.Auth::user()->name,
+            'level' => 'success',
+            'greeting' => 'Halo, ' . Auth::user()->name,
             'introLines' => [
                 'Selamat! kamu berhasil mengirim email percobaan.',
-                'Email ini dikirim sebagai percobaan pengaturan pada '.config('app.name').'.',
+                'Email ini dikirim sebagai percobaan pengaturan pada ' . config('app.name') . '.',
             ],
             'outroLines' => [],
         ];
@@ -101,7 +105,7 @@ class GlobalController extends Controller
             $message = 'Failed to send email based on provided settings.';
             if (request()->ajax()) {
                 return [
-                    'status'  => false,
+                    'status' => false,
                     'message' => $message,
                 ];
             }

@@ -27,16 +27,17 @@ class SaveRequest extends FormRequest
         $drivers = implode(',', array_keys(Setting::getDrivers()));
 
         return [
-            'app_name'    => 'required',
-            'app_email'   => 'required|email',
+            'app_name' => 'required',
+            'app_email' => 'required|email',
             'mail_driver' => 'required',
+            'newsletter_list' => 'required|integer|exists:newsletter_lists,id',
 
             // drivers
-            'mail_driver' => 'required:in'.$drivers,
-            'mail_host'   => 'required',
+            'mail_driver' => 'required:in' . $drivers,
+            'mail_host' => 'required',
 
             // sender
-            'mail_from_name'    => 'required|string',
+            'mail_from_name' => 'required|string',
             'mail_from_address' => 'required|email',
         ];
     }

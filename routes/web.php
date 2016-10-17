@@ -66,9 +66,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
     });
 
     Route::group(['namespace' => 'Setting', 'prefix' => 'setting'], function () {
-        Route::get('/', 'GlobalController@getIndex')->name('admin.setting');
-        Route::post('/', 'GlobalController@postCreate')->name('admin.setting.post');
-        Route::post('email', 'GlobalController@postEmail')->name('admin.setting.email');
+        Route::get('/', 'SettingController@getIndex')->name('admin.setting');
+        Route::post('/', 'SettingController@postCreate')->name('admin.setting.post');
+        Route::post('email', 'SettingController@postEmail')->name('admin.setting.email');
     });
 });
 
