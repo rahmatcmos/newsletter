@@ -30,7 +30,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
-                                Send Password Reset Link
+                                <i class="fa fa-envelope"></i> Send Password Reset Link
                             </button>
                         </div>
                     </form>

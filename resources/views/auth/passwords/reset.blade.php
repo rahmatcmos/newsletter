@@ -50,7 +50,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
-                                Reset Password
+                                <i class="fa fa-key"></i> Reset Password
                             </button>
                             <a class="btn btn-link pull-right" href="{{ url('login') }}">
                                 Already registered?

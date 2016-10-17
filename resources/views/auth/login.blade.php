@@ -41,7 +41,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary pull-left">
-                                Login
+                               <i class="fa fa-unlock"></i> Login
                             </button>
 
                             <a class="btn btn-link pull-right" href="{{ url('/password/reset') }}">
