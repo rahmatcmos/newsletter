@@ -51,7 +51,7 @@ class NewsletterController extends Controller
 
             // save to database
             $subscriber = NewsletterSubscriber::FirstOrNew([
-                'email' => $request->email,
+                'email'              => $request->email,
                 'newsletter_list_id' => config('newsletter.list'),
             ]);
 

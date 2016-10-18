@@ -26,7 +26,7 @@ class ContactController extends Controller
         ];
 
         return view('contact.index', compact('subjects'))
-            ->withTitle('Get in touch');
+            ->withTitle(trans('contact.description'));
     }
 
     /**
@@ -51,25 +51,26 @@ class ContactController extends Controller
             );
 
             if ($request->attach->move($path, $fileName)) {
-                $attachs[] = $path.'/'.$fileName;
+                $attachs[] = $path . '/' . $fileName;
             }
         }
 
         $data = [
             'level'      => 'success',
-            'greeting'   => 'Halo,',
+            'greeting'   => trans('contact.email.send.greeting'),
             'introLines' => [
-                'Kamu mendapatkan pesan dari halaman kontak dengan subject: '.$request->subject.'.',
-                '"'.$request->message.'"',
+                'Kamu mendapatkan pesan dari halaman kontak dengan subject: ' . $request->subject . '.',
+                '"' . $request->message . '"',
             ],
-            'outroLines' => [
-                'Silakan balas ini untuk menanggapi pesa tersebut.',
-            ],
+            'outroLines' => trans('contact.email.send.outro'),
         ];
 
         \Mail::send('email.default', $data, function ($mail) use ($request, $attachs) {
             $mail->to(config('app.email'), config('app.name'))
-                ->subject(sprintf('%s dari %s', $request->subject, config('app.name')));
+                ->subject(trans('contact.email.send.subject', [
+                    'subject' => $request->subject,
+                    'name'    => config('app.name'),
+                ]));
 
             if (!empty($attachs)) {
                 foreach ($attachs as $attach) {
@@ -81,11 +82,11 @@ class ContactController extends Controller
         if (empty(\Mail::failures())) {
             return redirect()
                 ->back()
-                ->with('success', 'Message has been sent.');
+                ->withSuccess(trans('contact.message.sent'));
         }
 
         return redirect()
             ->back()
-            ->with('error', 'Failed to send message. Please try again.');
+            ->withError(trans('contact.message.failedToSend'));
     }
 }

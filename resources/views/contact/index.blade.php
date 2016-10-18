@@ -15,19 +15,19 @@
                         {{ method_field('post') }}
 
                         <div class="form-group {{ $errors->has('name') ? 'has-error' : null }}">
-                            <label for="name" class="control-label">Name</label>
+                            <label for="name" class="control-label">@lang('contact.form.name')</label>
                             <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
 
                         <div class="form-group {{ $errors->has('email') ? 'has-error' : null }}">
-                            <label for="name" class="control-label">Email Address</label>
+                            <label for="name" class="control-label">@lang('contact.form.email')</label>
                             <input type="email" name="email" class="form-control" value="{{ old('email') }}" class="form-control" required>
                             <span class="help-block">{{ $errors->first('email') }}</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="subject" class="control-label">Subject</label>
+                            <label for="subject" class="control-label">@lang('contact.form.subject')</label>
                             <select name="subject" id="subject" class="form-control" required>
                                 @foreach ($subjects as $subject)
                                     <option value="{{ $subject }}">{{ $subject }}</option>
@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="form-group {{ $errors->has('message') ? 'has-error' : null }}">
-                            <label for="message" class="control-label">Message</label>
+                            <label for="message" class="control-label">@lang('contact.form.message')</label>
                             <textarea name="message" id="message" cols="30" rows="5" class="form-control" required data-minlength="10">{{ old('message') }}</textarea>
                             <span class="help-block">{{ $errors->first('message') }}</span>
                         </div>
@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary send"><i class="fa fa-envelope"></i> Send Message</button>
+                            <button type="submit" class="btn btn-primary send"><i class="fa fa-envelope"></i> @lang('contact.button.send')</button>
                         </div>
                     </form>
                 </div>
