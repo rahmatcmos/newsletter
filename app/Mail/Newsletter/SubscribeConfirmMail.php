@@ -11,12 +11,39 @@ class SubscribeConfirmMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /**
+     * Subscriber object
+     *
+     * @var object
+     */
     public $subscriber;
 
+    /**
+     * Set level status (error, success)
+     *
+     * @var string
+     */
     public $level = 'success';
 
+    /**
+     * Greeting text
+     *
+     * @var string
+     */
     public $greeting;
+
+    /**
+     * Intro lines
+     *
+     * @var array
+     */
     public $introLines;
+
+    /**
+     * Outro lines
+     *
+     * @var array
+     */
     public $outroLines;
 
     /**
@@ -28,14 +55,15 @@ class SubscribeConfirmMail extends Mailable
     {
         $this->subscriber = $subscriber;
 
-        $this->greeting = 'Halo, '.$this->subscriber->name;
-        $this->introLines = [
-            'Pendaftaran kamu telah dikonfirmasi. Terimakasih telah berlangganan di nawala'.config('app.name'),
-        ];
-        $this->outroLines = [
-            'Dengan berlangganan nawala, kamu setuju dengan syarat dan ketentuan yang berlaku.',
-            'Kami janji tidak ada spam atau email sampah, dan tidak lebih dari satu email setiap minggunya. Kami tidak serajin itu.',
-        ];
+        $this->subject = trans('newsletter.email.confirm.subject');
+
+        $this->greeting = trans('newsletter.email.confirm.greeting', [
+            'name' => $this->subscriber->name,
+        ]);
+
+        $this->introLines = trans('newsletter.email.confirm.intro');
+
+        $this->outroLines = trans('newsletter.email.confirm.outro');
     }
 
     /**
@@ -46,6 +74,6 @@ class SubscribeConfirmMail extends Mailable
     public function build()
     {
         return $this->view('email.default')
-            ->subject('Your Subscription has been Confirmed');
+            ->subject($this->subject);
     }
 }

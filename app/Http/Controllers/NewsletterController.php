@@ -25,13 +25,13 @@ class NewsletterController extends Controller
     {
         $list = NewsletterList::find(config('newsletter.list'));
         if (empty($list)) {
-            Log::critical('Default list is not defined.', ['url' => route('newsletter.index')]);
+            Log::critical(trans('newsletter.message.noDefaultList'), ['url' => route('newsletter.index')]);
 
-            abort(500, 'Default list is not defined. Please <a href="' . route('contact') . '">contact</a> our sys admin for more information.');
+            abort(500, trans('newsletter.message.errorNoDefaultList'));
         }
 
         return view('newsletter.index')
-            ->withTitle('Subscribe Newsletter');
+            ->withTitle(trans('newsletter.subscribe'));
     }
 
     /**
@@ -43,7 +43,7 @@ class NewsletterController extends Controller
      */
     public function postSubscribe(SubscribeRequest $request)
     {
-        abort_if(empty(config('newsletter.list')), 500, 'Default list is not defined.');
+        abort_if(empty(config('newsletter.list')), 500, trans('newsletter.message.noDefaultList'));
 
         \DB::transaction(function () use ($request) {
             // get default list
@@ -65,7 +65,7 @@ class NewsletterController extends Controller
 
         return redirect()
             ->route('newsletter.index')
-            ->with('success', 'Thank you for registering our newsletter. Please check your inbox.');
+            ->with('success', trans('newsletter.message.subscribed'));
     }
 
     /**
@@ -76,14 +76,14 @@ class NewsletterController extends Controller
     public function getConfirm()
     {
         $email = \Crypt::decrypt(request('key'));
-        abort_if(empty($email), 404, 'Email address not found.');
+        abort_if(empty($email), 404, trans('newsletter.message.emailNotFound'));
 
         // find email
         $subscriber = NewsletterSubscriber::whereEmail($email)->first();
         if (empty($subscriber)) {
             return redirect()
                 ->route('newsletter.index')
-                ->with('error', 'Invalid email address.');
+                ->with('error', trans('newsletter.message.emailInvalid'));
         }
 
         $subscriber->status = 'subscribed';
@@ -94,7 +94,7 @@ class NewsletterController extends Controller
 
         return redirect()
             ->route('newsletter.index')
-            ->with('success', 'You has been subscribed newsletter.');
+            ->withSuccess(trans('newsletter.message.confirmed'));
     }
 
     /**
@@ -107,6 +107,6 @@ class NewsletterController extends Controller
         $reasons = \App\NewsletterReason::all();
 
         return view('newsletter.unsubscribe', compact('reasons'))
-            ->withTitle('Unsubscribe Newsletter');
+            ->withTitle(trans('newsletter.unsubscribe'));
     }
 }

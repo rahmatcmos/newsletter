@@ -89,6 +89,9 @@ class RegisterController extends Controller
 
         \Mail::to($user->email, $user->name)->queue(new RegisterMail($user));
 
+        activity()->performedOn($user)
+            ->log(':subject.name has been registered as :subject.group');
+
         \Log::debug('New user has been registered.', ['email' => $user->email]);
 
         $this->guard()->login($user);

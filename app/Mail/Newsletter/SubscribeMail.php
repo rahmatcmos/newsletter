@@ -11,7 +11,12 @@ class SubscribeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subscriber;
+    /**
+     * Set email subject
+     *
+     * @var [type]
+     */
+    public $subject;
 
     /**
      * Emai level (success, error).
@@ -39,7 +44,7 @@ class SubscribeMail extends Mailable
      *
      * @var string
      */
-    public $actionText = 'Konfirmasi Berlangganan';
+    public $actionText;
 
     /**
      * Intro lines.
@@ -64,21 +69,22 @@ class SubscribeMail extends Mailable
     {
         $this->subscriber = $subscriber;
 
-        $this->greeting = 'Hello, '.$this->subscriber->name;
+        $this->subject = trans('newsletter.email.subscribe.subject');
 
-        $this->introLines = [
-            'Terimakasih telah mengisi form pendaftaran untuk berlangganan Nawala.',
-            'Tinggal satu langkah lagi agar kamu mendapatkan informasi terbaru melalui kotak masuk.',
-        ];
+        $this->greeting = trans('newsletter.email.subscribe.greeting', [
+            'name' => $this->subscriber->name,
+        ]);
+
+        $this->introLines = trans('newsletter.email.subscribe.intro');
+
+        $this->actionText = trans('newsletter.email.subscribe.actionText');
 
         $this->actionUrl = route('newsletter.confirm', [
-            'key'        => \Crypt::encrypt($this->subscriber->email),
+            'key' => \Crypt::encrypt($this->subscriber->email),
             'utm_source' => 'emal',
         ]);
 
-        $this->outroLines = [
-            'Dengan mengklik "Konfirmasi Berlangganan", kamu setuju dengan syarat dan ketentuan yang berlaku.',
-        ];
+        $this->outroLines = trans('newsletter.email.subscribe.outro');
     }
 
     /**
@@ -89,6 +95,6 @@ class SubscribeMail extends Mailable
     public function build()
     {
         return $this->view('email.default')
-            ->subject('Confirm Your Subscription');
+            ->subject($this->subject);
     }
 }

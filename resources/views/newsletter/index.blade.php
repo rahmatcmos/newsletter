@@ -17,19 +17,19 @@
                         {{ method_field('post') }}
 
                         <div class="form-group {{ $errors->has('name') ? 'has-error' : null }}">
-                            <label for="name" class="control-label">Name</label>
+                            <label for="name" class="control-label">@lang('newsletter.form.name')</label>
                             <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
                         <div class="form-group {{ $errors->has('email') ? 'has-error' : null }}">
-                            <label for="name" class="control-label">Email Address</label>
+                            <label for="name" class="control-label">@lang('newsletter.form.email')</label>
                             <input type="email" name="email" class="form-control" value="{{ old('email') }}" class="form-control" required>
                             <span class="help-block">{{ $errors->first('email') }}</span>
                         </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">
-                               <i class="fa fa-newspaper-o"></i> Subscribe Now!
+                               <i class="fa fa-newspaper-o"></i> @lang('newsletter.button.subscribe')
                             </button>
                         </div>
                     </form>

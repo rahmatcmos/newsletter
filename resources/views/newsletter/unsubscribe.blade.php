@@ -8,10 +8,20 @@
                 <div class="panel-heading">{{ $title or config('app.name') }}</div>
 
                 <div class="panel-body">
-                    <div class="alert alert-success">You are successfully unsubscribed our newsletter. </div>
-                    <p>We sad to hear that. If you have time, glad to you give some reason why you leave us.</p>
+                    <div class="alert alert-success">@lang('newsletter.message.unsubscribed')</div>
+                    <p>@lang('newsletter.reason')</p>
 
-                    <form action="{{ route('newsletter.reason.post') }}">
+                    <form action="{{ route('newsletter.reason.post') }}" method="post" data-toggle="validator">
+                        {{ csrf_field() }}
+                        {{ method_field('post') }}
+
+                        @if (empty(request('email')))
+                            <div class="form-group">
+                                <label for="email" class="control-label">@lang('newsletter.form.email')</label>
+                                <input type="text" class="form-control" name="email" value="{{ old('email') }}" required>
+                            </div>
+                        @endif
+
                         @foreach ($reasons as $reason)
                             <div class="radio">
                                 <label>
@@ -21,7 +31,7 @@
                         @endforeach
                         <div class="radio">
                             <label>
-                                <input type="radio" name="reason" id="reason-other" value="other"> Other &mdash; Please provide reason below</small>
+                                <input type="radio" name="reason" id="reason-other" value="other">@lang('newsletter.form.reasonOther')</small>
                             </label>
                         </div>
 
@@ -30,7 +40,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">@lang('newsletter.button.send')</button>
                         </div>
                     </form>
                 </div>
