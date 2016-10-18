@@ -35,7 +35,7 @@
                                     <td>{{ $list->description }}</td>
                                     <td>{{ $list->subscribers->count() }} {{ $list->subscribers->count() <= 1 ? 'person' : 'people' }}</td>
                                     <td>
-                                        @if ($list->is_default)
+                                        @if ($list->id === (int) config('newsletter.list'))
                                             <span class="label label-success">Yes</span>
                                         @else
                                             <span class="label label-danger">No</span>

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Newsletter\SubscribeRequest;
 use App\Mail\Newsletter\SubscribeConfirmMail;
 use App\Mail\Newsletter\SubscribeMail;
+use App\NewsletterList;
 use App\NewsletterSubscriber;
+use Log;
 
 /**
  * @author Yugo <dedy.yugo.purwanto>
@@ -21,6 +23,13 @@ class NewsletterController extends Controller
      */
     public function getIndex()
     {
+        $list = NewsletterList::find(config('newsletter.list'));
+        if (empty($list)) {
+            Log::critical('Default list is not defined.', ['url' => route('newsletter.index')]);
+
+            abort(500, 'Default list is not defined. Please <a href="' . route('contact') . '">contact</a> our sys admin for more information.');
+        }
+
         return view('newsletter.index')
             ->withTitle('Subscribe Newsletter');
     }
@@ -34,14 +43,18 @@ class NewsletterController extends Controller
      */
     public function postSubscribe(SubscribeRequest $request)
     {
+        abort_if(empty(config('newsletter.list')), 500, 'Default list is not defined.');
+
         \DB::transaction(function () use ($request) {
             // get default list
-            $list = \App\NewsletterList::whereIsDefault(true)->first();
-            abort_if(empty($list), 404, 'No default list defined.');
+            $list = NewsletterList::findOrFail(config('newsletter.list'));
 
             // save to database
-            $subscriber = NewsletterSubscriber::FirstOrNew(['email' => $request->email]);
-            $subscriber->newsletter_list_id = $list->id;
+            $subscriber = NewsletterSubscriber::FirstOrNew([
+                'email' => $request->email,
+                'newsletter_list_id' => config('newsletter.list'),
+            ]);
+
             $subscriber->name = $request->name;
             $subscriber->status = 'pending';
             $subscriber->save();

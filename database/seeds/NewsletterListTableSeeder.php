@@ -18,13 +18,12 @@ class NewsletterListTableSeeder extends Seeder
         $user = User::whereGroup('user')->first();
 
         DB::table($list->getTable())->insert([
-            'user_id'     => $user->id,
-            'slug'        => 'default',
-            'name'        => 'Default',
+            'user_id' => $user->id,
+            'slug' => 'default',
+            'name' => 'Default',
             'description' => 'Default list for all subscribers.',
-            'is_default'  => true,
-            'created_at'  => Carbon::now(),
-            'updated_at'  => Carbon::now(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 }
