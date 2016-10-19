@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
         // setup global setting
         if (Schema::hasTable('settings')) {
             $settings = \Cache::get('setting', function () {
-                return \App\Setting::all();
+                return \App\Setting::orderBy('key', 'ASC')->get();
             });
 
             foreach ($settings as $setting) {
