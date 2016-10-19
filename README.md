@@ -1,6 +1,9 @@
 # Newsletter
 
 [![StyleCI](https://styleci.io/repos/70211763/shield?branch=master)](https://styleci.io/repos/70211763)
+[![Status](https://img.shields.io/badge/status-dev-red.svg?style=flat-square)](https://img.shields.io/badge/status-dev-red.svg?style=flat-square)
+
+[![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?style=flat-square)](http://nawala.laravel.web.id)
 
 Simple newsletter app using Laravel framework.
 
