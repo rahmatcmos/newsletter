@@ -51,3 +51,7 @@ Data yang otomatis dibuat adalah:
 - Newsletter template
 
 Default login ke aplikasi dengan role admin dapat menggunakan username ```admin@mail.com``` dan password ```admin```. Sedangkan untuk login dengan role user dapat menggunakan username ```user@email.com``` dan password ```user```.
+
+## Lisensi
+
+MIT License.
