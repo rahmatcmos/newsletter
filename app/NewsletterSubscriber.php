@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class NewsletterSubscriber extends Model
 {
-    // use Searchable;
+    use Searchable;
 
     /**
      * Set table name.
@@ -29,19 +30,32 @@ class NewsletterSubscriber extends Model
         'updated_at',
     ];
 
+    /**
+     * @param $value
+     * @return mixed
+     */
     public function setEmailAttribute($value)
     {
         return $this->attributes['email'] = strtolower($value);
     }
 
+    /**
+     * Get the index name for the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        return 'newsletter_subscriber_index';
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
     public function getStatusAttribute($value)
     {
         return $this->attributes['status'] = ucwords($value);
-    }
-
-    public function list()
-    {
-        return $this->belongsTo(NewsletterList::class, 'newsletter_list_id');
     }
 
     /**
@@ -55,23 +69,12 @@ class NewsletterSubscriber extends Model
     }
 
     /**
-     * Filter data by list and query string.
-     *
-     * @param object $query
-     * @param object $list
+     * Belongs to one list
      *
      * @return object
      */
-    public function scopeFilter($query, $list = null)
-    {
-        // filter by query string (if provided)
-        if (!empty(request('query'))) {
-            $query->where('name', 'LIKE', '%'.request('query').'%')
-                ->orWhere('email', 'LIKE', '%'.request('query').'%')
-                ->orWhere('status', request('query'));
-        }
-
-        return $query;
+    function list() {
+        return $this->belongsTo(NewsletterList::class, 'newsletter_list_id');
     }
 
     /**

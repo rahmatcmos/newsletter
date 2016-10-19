@@ -10,7 +10,8 @@
         "graham-campbell/markdown": "^7.0",
         "laravel/scout": "^1.1",
         "barryvdh/laravel-debugbar": "^2.3",
-        "spatie/laravel-activitylog": "^1.10"
+        "spatie/laravel-activitylog": "^1.10",
+        "damiantw/laravel-scout-mysql-driver": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

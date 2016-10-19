@@ -15,7 +15,7 @@ return [
     |
      */
 
-    'driver' => env('SCOUT_DRIVER', 'elasticsearch'),
+    'driver'        => env('SCOUT_DRIVER', 'elasticsearch'),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return [
     |
      */
 
-    'prefix' => env('SCOUT_PREFIX', ''),
+    'prefix'        => env('SCOUT_PREFIX', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +41,29 @@ return [
     |
      */
 
-    'queue' => true,
+    'queue'         => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | MySQL COnfiguration
+    |--------------------------------------------------------------------------
+    |
+    | Search Eloquent Models using MySQL FULLTEXT Indexes or WHERE LIKE '%:search%' statements.
+    | https://github.com/damiantw/laravel-scout-mysql-driver
+    |
+    | This driver can perform different types of search queries depending on the mode set in the
+    | scout.mysql.mode Laravel configuration value. Currently 4 different modes are supported
+    | NATURAL_LANGUAGE,BOOLEAN,LIKE and LIKE_EXPANDED.
+    |
+     */
+    'mysql'         => [
+        'mode'                         => 'LIKE',
+        'model_directories'            => [app_path()],
+        'min_search_length'            => 0,
+        'min_fulltext_search_length'   => 4,
+        'min_fulltext_search_fallback' => 'LIKE',
+        'query_expansion'              => false,
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -54,7 +76,7 @@ return [
     |
      */
 
-    'algolia' => [
+    'algolia'       => [
         'id'     => env('ALGOLIA_APP_ID', ''),
         'secret' => env('ALGOLIA_SECRET', ''),
     ],
@@ -71,7 +93,7 @@ return [
      */
 
     'elasticsearch' => [
-        'index' => env('ELASTICSEARCH_INDEX', 'laravel'),
+        'index'  => env('ELASTICSEARCH_INDEX', 'laravel'),
 
         'config' => [
             'hosts' => [

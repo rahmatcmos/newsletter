@@ -31,11 +31,12 @@ class SubscriberController extends Controller
             $list = NewsletterList::whereSlug($listSlug)->first();
         }
 
-        $subscribers = NewsletterSubscriber::select('id', 'newsletter_list_id', 'name', 'email', 'created_at', 'status')
-            ->with('list', 'list.user')
-            ->filter(isset($list) ? $list : null)
-            ->sort()
+        $subscribers = NewsletterSubscriber::when(request('query'), function ($query) {
+            return $query->search(request('query'));
+        })
             ->paginate(20);
+
+        $subscribers->load('list', 'list.user');
 
         $labels = [
             'Pending'      => 'warning',
@@ -43,10 +44,11 @@ class SubscriberController extends Controller
             'Unsubscribed' => 'danger',
         ];
 
-        activity()->log('Viewed subscribers index.');
+        activity()->withProperties(['query' => request('query')])
+            ->log('Viewed subscribers index.');
 
         return view('auth.newsletter.subscriber.index', compact('subscribers', 'labels', 'lists'))
-            ->withTitle(sprintf('Subscribers (%d)', $subscribers->total()));
+            ->withTitle(trans('newsletters.subscribers.title', ['total' => $subscribers->total()]));
     }
 
     /**

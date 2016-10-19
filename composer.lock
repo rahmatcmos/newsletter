@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d99680d486287863d18bc0733d924f6",
-    "content-hash": "85d391185f9796b564a4cdcb8a6ce110",
+    "hash": "24664ed02d3a5b7e7dcd324cb87bbeb9",
+    "content-hash": "c3b1cee0dfb59d2f086f7b3da849cdf9",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -164,6 +164,44 @@
                 "preload"
             ],
             "time": "2015-11-09 22:51:51"
+        },
+        {
+            "name": "damiantw/laravel-scout-mysql-driver",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/damiantw/laravel-scout-mysql-driver.git",
+                "reference": "9634a7a998ef917d59853d3efd90b7fb1eb78391"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/damiantw/laravel-scout-mysql-driver/zipball/9634a7a998ef917d59853d3efd90b7fb1eb78391",
+                "reference": "9634a7a998ef917d59853d3efd90b7fb1eb78391",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "5.3.*",
+                "laravel/scout": "^1.1",
+                "php": ">=5.6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DamianTW\\MySQLScout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Damian Crisafulli",
+                    "email": "damian.crisafulli@troyweb.com"
+                }
+            ],
+            "description": "MySQL driver for Laravel Scout.",
+            "time": "2016-10-12 13:32:35"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
