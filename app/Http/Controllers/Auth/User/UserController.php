@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Auth\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\DeleteRequest;
+use App\Http\Requests\User\EditRequest;
 use App\Mail\User\CreateMail;
 use App\Mail\User\DeleteMail;
 use App\User;
 use Auth;
+use DB;
 use Spatie\Activitylog\Models\Activity;
 
 /**
@@ -17,6 +20,10 @@ use Spatie\Activitylog\Models\Activity;
  */
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        config(['laravel-activitylog.default_log_name' => 'user']);
+    }
     /**
      * Show all registered users.
      *
@@ -26,14 +33,14 @@ class UserController extends Controller
     {
         $this->authorize('index', User::class);
 
-        activity()->log('Viewied users index.');
+        activity()->log('user.log.view');
 
         $users = User::orderBy('name', 'ASC')
             ->with('lists')
             ->paginate(20);
 
         return view('auth.user.user.index', compact('users'))
-            ->withTitle('Users');
+            ->withTitle(trans('user.title'));
     }
 
     /**
@@ -48,12 +55,14 @@ class UserController extends Controller
         if (empty($id)) {
             $user = Auth::user();
         } else {
-            $user = User::findOrFail($id);
+            $user = User::find($id);
+            abort(404, trans('user.message.notFound'));
         }
 
         if ($user->id !== Auth::id()) {
             activity()->performedOn($user)
-                ->log('Viewed :subject.name\'s profile.');
+                ->withProperties(['name' => $user->name])
+                ->log('user.log.viewProfile');
         }
 
         $activities = Activity::whereCauserId($user->id)
@@ -73,8 +82,10 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        return view('auth.user.user.create')
-            ->withTitle('Create New User');
+        $groups = User::getGroups();
+
+        return view('auth.user.user.create', compact('groups'))
+            ->withTitle(trans('user.create'));
     }
 
     /**
@@ -88,23 +99,87 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
 
-        \DB::transaction(function () use ($request) {
+        $transaction = \DB::transaction(function () use ($request) {
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = '';
+            if (!empty($request->password)) {
+                $user->password = bcrypt($request->password);
+            } else {
+                $user->password = '';
+            }
             $user->remember_token = $request->_token;
+            $user->group = $request->group;
             $saved = $user->save();
 
             // send email confirmation
             \Mail::to($user->email, $user->name)->queue(new CreateMail($user));
 
-            if ($saved === true) {
-                return redirect()
-                    ->route('admin.user')
-                    ->with('success', sprintf('New user %s has been created.', $user->name));
-            }
+            activity()->performedOn($user)
+                ->withProperties(['name' => $user->name])
+                ->log('user.log.created');
+
+            return [
+                'status' => $saved,
+                'user'   => $user,
+            ];
         });
+
+        if ($transaction['status'] === true) {
+            return redirect()
+                ->route('admin.user')
+                ->withSuccess(trans('user.message.created', ['name' => $transaction['user']->name]));
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Show form and prepare data editing
+     *
+     * @param $id
+     */
+    public function getEdit($id)
+    {
+        $user = User::find($id);
+        if (empty($user)) {
+            abort(404, trans('user.message.notFound'));
+        }
+
+        $groups = User::getGroups();
+
+        return view('auth.user.user.edit', compact('user', 'groups'))
+            ->withTitle(trans('user.edit', ['name' => $user->name]));
+    }
+
+    /**
+     * Edit existing user data
+     *
+     * @param EditRequest $request
+     */
+    public function putEdit(EditRequest $request)
+    {
+        $user = User::find($request->id);
+
+        $transaction = DB::transaction(function () use ($user, $request) {
+            $user->name = $request->name;
+            $saved = $user->save();
+
+            activity()->performedOn($user)
+                ->withProperties(['name' => $user->name])
+                ->log('user.log.edit');
+
+            return [
+                'status' => $saved,
+                'user'   => $user,
+            ];
+        });
+
+        if ($transaction['status'] === true) {
+            return redirect()
+                ->route('admin.user.edit', $transaction['user']->id)
+                ->withSuccess(trans('user.message.edited', ['name' => $transaction['user']->name]));
+        }
 
         return redirect()->back();
     }
@@ -116,24 +191,33 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function getDelete($id = null)
+    public function deleteDelete(DeleteRequest $request)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($request->id);
 
         $this->authorize('delete', $user);
 
-        \DB::transaction(function () use ($user) {
+        $transaction = DB::transaction(function () use ($user) {
             // send email notification first
             \Mail::to($user->email, $user->name)->queue(new DeleteMail($user));
 
+            activity()->performedOn($user)
+                ->withProperties(['name' => $user->name])
+                ->log('Deleted user :subject.name');
+
             $deleted = $user->delete();
 
-            if ($deleted === true) {
-                return redirect()
-                    ->route('admin.user')
-                    ->with('success', sprintf('User %s has been deleted.', $user->name));
-            }
+            return [
+                'status' => $deleted,
+                'user'   => $user,
+            ];
         });
+
+        if ($transaction['status'] === true) {
+            return redirect()
+                ->route('admin.user')
+                ->withSuccess('user.log.delete');
+        }
 
         // come here for no reason
         return redirect()->back();

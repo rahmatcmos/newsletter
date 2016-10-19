@@ -28,6 +28,29 @@ class User extends Authenticatable
     ];
 
     /**
+     * Email address must be lower string
+     *
+     * @param string $email
+     */
+    public function setEmailAttribute($email)
+    {
+        $this->attributes['email'] = strtolower($email);
+    }
+
+    /**
+     * Define user group
+     *
+     * @return array
+     */
+    public static function getGroups()
+    {
+        return [
+            'admin' => 'Administrator',
+            'user'  => 'Pengguna',
+        ];
+    }
+
+    /**
      * Users has many Newsletters Lists.
      *
      * @return object

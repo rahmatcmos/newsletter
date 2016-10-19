@@ -51,12 +51,13 @@ return [
 
     // sub lang
     'subscribers' => [
-        'title'   => 'Pelanggan',
-        'create'  => 'Tambah Pelanggan',
-        'list'    => 'Daftar Pelanggan',
-        'warning' => 'Peringatan',
-        'edit'    => 'Ubah :name',
-        'form'    => [
+        'title'       => 'Pelanggan',
+        'create'      => 'Tambah Pelanggan',
+        'list'        => 'Daftar Pelanggan',
+        'warning'     => 'Peringatan',
+        'edit'        => 'Ubah :name',
+        'userDeleted' => '*Dihapus*',
+        'form'        => [
             'name'     => 'Nama Lengkap',
             'email'    => 'Alamat Surel',
             'list'     => 'Daftar',
@@ -67,7 +68,7 @@ return [
             'action'   => 'Aksi',
             'password' => 'Katasandi',
         ],
-        'button'  => [
+        'button'      => [
             'create'   => 'Tambah Pelanggan',
             'save'     => 'Simpan Pelanggan',
             'truncate' => 'Hapus Semua',
@@ -77,7 +78,7 @@ return [
             'close'    => 'Tutup',
             'delete'   => 'Hapus',
         ],
-        'message' => [
+        'message'     => [
             'created'         => 'Pelanggan baru dengan nama :name (:email) berhasil ditambahkan.',
             'noSubscriber'    => 'Data pelanggan tidak tersedia.',
             'notFound'        => 'Data pelanggan tidak ditemukan dalam bassidata.',

@@ -152,23 +152,28 @@
 							</div>
 						</div>
 						<div class="col-md-8">
-							<h3>Activities</h3>
-                            <table class="table">
-                                <thead>
-                                    <th>Action</th>
-                                    <th>Description</th>
-                                    <th>Date</th>
-                                </thead>
-                                <tbody>
-                                    @foreach ($activities as $activity)
-                                        <tr>
-                                            <td>{{ $activity->log_name }}</td>
-                                            <td>{{ $activity->description }}</td>
-                                            <td>{{ $activity->created_at->format(config('date.format')) }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+							<h3>@lang('user.activity')</h3>
+
+                            <div class="table-responsive">
+
+                                <table class="table">
+                                    <thead>
+                                        <th>@lang('user.form.action')</th>
+                                        <th>@lang('user.form.log')</th>
+                                        <th>@lang('user.form.date')</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($activities as $activity)
+                                            <tr>
+                                                <td>{{ $activity->log_name }}</td>
+                                                <td>{{ trans($activity->description) }}</td>
+                                                <td>{{ $activity->created_at->format(config('date.format')) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                            </div>
 
                             {{ $activities->links() }}
 						</div>

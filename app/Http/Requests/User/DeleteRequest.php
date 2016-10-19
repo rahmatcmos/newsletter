@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateRequest extends FormRequest
+class DeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,17 +26,13 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         $user = new User;
-        $groups = implode(',', array_keys(User::getGroups()));
 
         return [
-            'name'  => 'required|max:50',
-            'email' => [
+            'id' => [
                 'required',
-                'email',
-                'max:100',
-                Rule::unique($user->getTable()),
+                'integer',
+                Rule::exists($user->getTable()),
             ],
-            'group' => 'required|in:' . $groups,
         ];
     }
 }

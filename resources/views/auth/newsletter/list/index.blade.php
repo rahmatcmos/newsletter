@@ -26,9 +26,16 @@
                             @foreach ($lists as $list)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('admin.user.profile', $list->user->id) }}">{{ $list->user->name }}</a>
-                                        @if (auth()->id() === $list->user->id)
-                                            <span class="label label-info">You</span>
+                                        @if (! empty($list->user))
+                                            <a href="{{ route('admin.user.profile', $list->user->id) }}">
+                                                {{ $list->user->name }}
+                                            </a>
+
+                                            @if (auth()->id() === $list->user->id)
+                                                <span class="label label-info">You</span>
+                                            @endif
+                                        @else
+                                            @lang('newsletter.list.userDeleted')
                                         @endif
                                     </td>
                                     <td><a href="{{ route('admin.subscriber', $list->slug) }}">{{ $list->name }}</a></td>
@@ -43,8 +50,8 @@
                                     </td>
                                     <td>{{ $list->created_at->format(config('date.format')) }}</td>
                                     <td class="text-right">
-                                        <a href="{{ route('admin.list.edit', $list->id) }}" class="btn btn-default edit {{ (auth()->id() !== $list->user->id AND auth()->user()->group === 'user') ? 'disabled' : '' }}" title="Edit current item"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{ route('admin.list.delete', $list->id) }}" class="btn btn-danger delete {{ (auth()->id() !== $list->user->id AND auth()->user()->group === 'user') ? 'disabled' : '' }}" title="Delete current item"><i class="fa fa-trash"></i></a>
+                                        <a href="{{ route('admin.list.edit', $list->id) }}" class="btn btn-default edit {{ (! empty($list->user) AND auth()->id() !== $list->user->id AND auth()->user()->group === 'user') ? 'disabled' : '' }}" title="Edit current item"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('admin.list.delete', $list->id) }}" class="btn btn-danger delete {{ (! empty($list->user) auth()->id() !== $list->user->id AND auth()->user()->group === 'user') ? 'disabled' : '' }}" title="Delete current item"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

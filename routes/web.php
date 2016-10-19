@@ -62,7 +62,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth', 'middleware' => 'auth'
         Route::get('create', 'UserController@getCreate')->name('admin.user.create');
         Route::post('create', 'UserController@postCreate')->name('admin.user.create.post');
         Route::get('edit/{id}', 'UserController@getEdit')->name('admin.user.edit');
-        Route::get('delete/{id}', 'UserController@getDelete')->name('admin.user.delete');
+        Route::put('edit', 'UserController@putEdit')->name('admin.user.edit.put');
+        Route::delete('delete', 'UserController@deleteDelete')->name('admin.user.delete');
     });
 
     Route::group(['namespace' => 'Setting', 'prefix' => 'setting'], function () {

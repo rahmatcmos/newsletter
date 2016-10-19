@@ -47,7 +47,14 @@
                         	@foreach ($subscribers as $subscriber)
                         	<tr class="{{ $subscriber->status === 'unsubscribed' ? 'text-muted' : '' }}">
                                 <td><input type="checkbox" value="{{ $subscriber->id }}"></td>
-                                <td><a href="{{ route('admin.user.profile', $subscriber->list->user->id) }}">{{ $subscriber->list->user->name }}</a></td>
+                                <td>
+                                    @if (! empty($subscriber->list->user))
+                                    <a href="{{ route('admin.user.profile', $subscriber->list->user->id) }}">   {{ $subscriber->list->user->name }}
+                                    </a>
+                                    @else
+                                        @lang('newsletter.subscribers.userDeleted')
+                                    @endif
+                                </td>
                                 <td><a href="{{ route('admin.subscriber', $subscriber->list->slug) }}">{{ $subscriber->list->name }}</a></td>
                         		<td>{{ $subscriber->name }}</td>
                         		<td>{{ $subscriber->email }}</td>

@@ -49,7 +49,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         // save to log activity
-        activity()->log('Logged out from application.');
+        activity()->log('user.log.logout');
 
         $this->guard()->logout();
 

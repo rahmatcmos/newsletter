@@ -6,7 +6,7 @@ use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateRequest extends FormRequest
+class EditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,13 +29,13 @@ class CreateRequest extends FormRequest
         $groups = implode(',', array_keys(User::getGroups()));
 
         return [
-            'name'  => 'required|max:50',
-            'email' => [
+            'id'    => [
                 'required',
-                'email',
-                'max:100',
-                Rule::unique($user->getTable()),
+                'integer',
+                Rule::exists($user->getTable()),
             ],
+            'name'  => 'required|max:50',
+            'email' => 'required|email|max:100',
             'group' => 'required|in:' . $groups,
         ];
     }

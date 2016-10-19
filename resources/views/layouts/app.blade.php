@@ -18,9 +18,9 @@
 
     <!-- Scripts -->
     <script>
-        window.Laravel =                                                                                                                         <?php echo json_encode([
-                                                                                                                                 'csrfToken' => csrf_token(),
-                                                                                                                         ]); ?>
+        window.Laravel =                                                                                                                                                                                                                                                                                                                         <?php echo json_encode([
+                                                                                                                                                                                                                                                                                                                                 'csrfToken' => csrf_token(),
+                                                                                                                                                                                                                                                                                                                         ]); ?>
     </script>
 </head>
 <body>
@@ -82,21 +82,21 @@
                                     <li><a href="{{ route('admin.reason') }}">Unsubscribe Reason</a></li>
                                 </ul>
                             </li>
-                            <li><a href="{{ route('admin.user') }}">Users</a></li>
-                            <li><a href="{{ route('admin.setting') }}">Settings</a></li>
-                            <li class="dropdown">
+                            <li class="{{ request()->is('admin/user') ? 'active' : '' }}"><a href="{{ route('admin.user') }}">@lang('user.title')</a></li>
+                            <li class="{{ request()->is('admin/setting') ? 'active' : '' }}"><a href="{{ route('admin.setting') }}">Settings</a></li>
+                            <li class="dropdown {{ request()->is('admin/user/*') ? 'active' : '' }}">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                    <i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }} ({{ ucwords(auth()->user()->group )}}) <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ route('admin.user.profile') }}">Profile</a></li>
-                                    <li><a href="">Change Password</a></li>
+                                    <li><a href="{{ route('admin.user.profile') }}">@lang('user.profile')</a></li>
+                                    <li><a href="">@lang('user.changePassword')</a></li>
                                     <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            @lang('user.logout')
                                         </a>
 
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">

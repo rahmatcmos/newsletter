@@ -1,0 +1,47 @@
+<?php
+
+return [
+    'title'          => 'Pengguna',
+    'create'         => 'Tambah Pengguna',
+    'you'            => 'Kamu!',
+    'delete'         => 'Hapus Pengguna :name',
+    'viewProfile'    => 'Lihat Profil :name',
+    'edit'           => 'Ubah Pengguna :name',
+    'profile'        => 'Profil Saya',
+    'changePassword' => 'Ubah Katasandi',
+    'logout'         => 'Keluar',
+    'activity'       => 'Aktivitas',
+    'form'           => [
+        'name'     => 'Nama Lengkap',
+        'email'    => 'Alamat Surel',
+        'group'    => 'Grup',
+        'status'   => 'Status',
+        'list'     => 'Jumlah List',
+        'joinDate' => 'Tanggal Bergabung',
+        'action'   => 'Aksi',
+        'keyword'  => 'Katakunci',
+        'date'     => 'Tanggal',
+        'log'      => 'Catatan',
+    ],
+    'button'         => [
+        'save'   => 'Simpan Pengguna',
+        'search' => 'Pencarian',
+        'delete' => 'Hapus',
+        'close'  => 'Tutup',
+        'update' => 'Perbarui Pengguna',
+        'back'   => 'Kembali',
+    ],
+    'message'        => [
+        'created'       => 'Pengguna dengan nama :name berhasil ditambahkan.',
+        'deleted'       => 'Pengguna dengan nama :name berhasil dihapus.',
+        'deleteWarning' => 'Apakah kamu yakin ingin menghapus pengguna ini? Aksi ini tidak dapat dibatalkan.',
+        'notFound'      => 'Pengguna tidak ditemukan.',
+        'edited'        => 'Pengguna :name berhasil diperbarui.',
+    ],
+    'log'            => [
+        'edit'   => 'Mengubah data pengguna.',
+        'creat'  => 'Membuat data pengguna.',
+        'view'   => 'Melihat data pengguna.',
+        'logout' => 'Keluar dari sistem aplikasi.',
+    ],
+];
