@@ -51,6 +51,45 @@ return [
 
     // sub lang
     'subscribers' => [
-        'title' => 'Pelanggan (:total)',
+        'title'   => 'Pelanggan',
+        'create'  => 'Tambah Pelanggan',
+        'list'    => 'Daftar Pelanggan',
+        'warning' => 'Peringatan',
+        'edit'    => 'Ubah :name',
+        'form'    => [
+            'name'     => 'Nama Lengkap',
+            'email'    => 'Alamat Surel',
+            'list'     => 'Daftar',
+            'keyword'  => 'Katakunci',
+            'user'     => 'Pengguna',
+            'status'   => 'Status',
+            'joinDate' => 'Tanggal',
+            'action'   => 'Aksi',
+            'password' => 'Katasandi',
+        ],
+        'button'  => [
+            'create'   => 'Tambah Pelanggan',
+            'save'     => 'Simpan Pelanggan',
+            'truncate' => 'Hapus Semua',
+            'export'   => 'Ekspor',
+            'import'   => 'Impor',
+            'search'   => 'Cari',
+            'close'    => 'Tutup',
+            'delete'   => 'Hapus',
+        ],
+        'message' => [
+            'created'         => 'Pelanggan baru dengan nama :name (:email) berhasil ditambahkan.',
+            'noSubscriber'    => 'Data pelanggan tidak tersedia.',
+            'notFound'        => 'Data pelanggan tidak ditemukan dalam bassidata.',
+            'deleteWarning'   => 'Apakah kamu yakin ingin menghapus data ini? Aksi ini tidak dapat dikembalikan.',
+            'passwordConfirm' => 'Masukkan katasandi untuk melanjutkan aksi ini.',
+            'edited'          => 'Data pelanggan :name berhasil diperbarui.',
+            'deleted'         => 'Pelanggan dengan nama :name (:email) berhasil dihapus.',
+            'truncated'       => 'Semua data pelanggan telah dihapus.',
+        ],
+    ],
+
+    'lists'       => [
+        'title' => 'Daftar (Grup)',
     ],
 ];

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth\Newsletter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Newsletter\CreateSubscriberRequest;
 use App\Http\Requests\Newsletter\Subscriber\EditRequest;
-use App\Mail\Newsletter\SubscribeMail;
 use App\NewsletterList;
 use App\NewsletterSubscriber;
 use Auth;
@@ -46,7 +45,7 @@ class SubscriberController extends Controller
             ->log('Viewed subscribers index.');
 
         return view('auth.newsletter.subscriber.index', compact('subscribers', 'labels', 'lists'))
-            ->withTitle(trans('newsletters.subscribers.title', ['total' => $subscribers->total()]));
+            ->withTitle(trans('newsletter.subscribers.title', ['total' => $subscribers->total()]));
     }
 
     /**
@@ -57,7 +56,7 @@ class SubscriberController extends Controller
     public function getCreate()
     {
         return view('auth.newsletter.subscriber.create', compact('lists'))
-            ->withTitle('Create New Subscriber');
+            ->withTitle(trans('newsletter.subscribers.create'));
     }
 
     /**
@@ -70,7 +69,11 @@ class SubscriberController extends Controller
     public function postCreate(CreateSubscriberRequest $request)
     {
         \DB::transaction(function () use ($request) {
-            $subscriber = new NewsletterSubscriber();
+            $subscriber = NewsletterSubscriber::firstOrNew([
+                'email'              => $request->email,
+                'newsletter_list_id' => $request->list,
+            ]);
+
             $subscriber->newsletter_list_id = $request->list;
             $subscriber->email = $request->email;
             $subscriber->name = $request->name;
@@ -81,17 +84,23 @@ class SubscriberController extends Controller
                 ->log('Created subscriber :subject.name (:subject.email)');
 
             // send email confirmation
-            \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber));
+            // \Mail::to($subscriber->email, $subscriber->name)->queue(new SubscribeMail($subscriber));
 
             if (!request()->ajax()) {
-                session()->flash('success', sprintf('New subscriber named %s (%s) has been created.', $subscriber->name, $subscriber->email));
+                session()->flash('success', trans('newsletter.subscribers.message.created', [
+                    'name'  => $subscriber->name,
+                    'email' => $subscriber->email,
+                ]));
             }
         });
 
         if (request()->ajax()) {
             return [
                 'isSuccess' => true,
-                'message'   => 'Subscriber has been created.',
+                'message'   => trans('newsletter.subscribers.message.created', [
+                    'name'  => $subscriber->name,
+                    'email' => $subscriber->email,
+                ]),
             ];
         }
 
@@ -108,11 +117,10 @@ class SubscriberController extends Controller
      */
     public function getEdit($id)
     {
-        $subscriber = NewsletterSubscriber::whereId($id)
-            ->firstOrFail();
+        $subscriber = NewsletterSubscriber::findOrFail($id);
 
         return view('auth.newsletter.subscriber.edit', compact('subscriber'))
-            ->withTitle(sprintf('Edit Subscriber %s', $subscriber->name));
+            ->withTitle(trans('newsletter.subscribers.edit', ['name' => $subscriber->name]));
     }
 
     /**
@@ -124,7 +132,8 @@ class SubscriberController extends Controller
      */
     public function postEdit(EditRequest $request)
     {
-        $subscriber = new NewsletterSubscriber();
+        $subscriber = NewsletterSubscriber::findOrFail($request->id);
+
         $subscriber->name = $request->name;
         $subscriber->email = $request->email;
         $subscriber->newsletter_list_id = $request->list;
@@ -135,7 +144,9 @@ class SubscriberController extends Controller
 
             return redirect()
                 ->route('admin.subscriber')
-                ->with('success', sprintf('Subscriber %s has been updated.', $subscriber->name));
+                ->withSuccess(trans('newsletter.subscribers.message.edited', [
+                    'name' => $subscriber->name,
+                ]));
         }
 
         return redirect()->back();
@@ -150,8 +161,8 @@ class SubscriberController extends Controller
      */
     public function getDelete($id = null)
     {
-        $subscriber = NewsletterSubscriber::whereHas('list', function ($query) {
-            return $query->whereUserId(Auth::id());
+        $subscriber = NewsletterSubscriber::whereHas('list', function ($list) {
+            return $list->whereUserId(Auth::id());
         })
             ->whereId($id)
             ->firstOrFail();
@@ -167,7 +178,10 @@ class SubscriberController extends Controller
 
             return redirect()
                 ->back()
-                ->with('success', sprintf('Subscriber %s has been deleted.', $subscriber->email));
+                ->withSuccess(trans('newsletter.subscribers.message.deleted', [
+                    'name'  => $subscriber->name,
+                    'email' => $subscriber->email,
+                ]));
         }
     }
 
@@ -185,6 +199,6 @@ class SubscriberController extends Controller
 
         return redirect()
             ->route('admin.subscriber')
-            ->with('success', 'All subscribers has been removed.');
+            ->withSuccess(trans('newsletter.subscribers.message.truncated'));
     }
 }

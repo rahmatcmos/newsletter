@@ -12,23 +12,26 @@
                     {{ csrf_field() }}
                     {{ method_field('post') }}
                         <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                            <label for="name" class="control-label">Name</label>
+                            <label for="name" class="control-label">@lang('newsletter.subscribers.form.name')</label>
                             <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
                         <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-                            <label for="email" class="control-label">Email</label>
+                            <label for="email" class="control-label">@lang('newsletter.subscribers.form.email')</label>
                             <input type="email" name="email" value="{{ old('email') }}" class="form-control" required>
                             <span class="help-block">{{ $errors->first('email') }}</span>
                         </div>
                         <div class="form-group {{ $errors->has('list') ? 'has-error' : '' }}">
-                            <label for="list" class="control-label">List</label>
+                            <label for="list" class="control-label">@lang('newsletter.subscribers.form.list')</label>
                             <select name="list" id="list" class="form-control" required></select>
                             <span class="help-block">{{ $errors->first('list') }}</span>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary" class="create">Save Subcriber</button>
+                            <button type="submit" class="btn btn-primary" class="create">
+                                <i class="fa fa-save"></i>
+                                @lang('newsletter.subscribers.button.save')
+                            </button>
                         </div>
                     </form>
                 </div>

@@ -18,9 +18,9 @@
 
     <!-- Scripts -->
     <script>
-        window.Laravel = <?php echo json_encode([
-    'csrfToken' => csrf_token(),
-]); ?>
+        window.Laravel =                                                                                                                         <?php echo json_encode([
+                                                                                                                                 'csrfToken' => csrf_token(),
+                                                                                                                         ]); ?>
     </script>
 </head>
 <body>
@@ -61,14 +61,14 @@
                             <li class="{{ request()->is('login') ? 'active' : '' }}"><p class="navbar-btn"><a href="{{ url('/login') }}" class="btn btn-primary"><i class="fa fa-lock"></i> Login</a></p></li>
                         @else
                             <li><a href="{{ route('home') }}">About</a></li>
-                            <li><a href="{{ route('admin.list') }}">Lists</a></li>
+                            <li><a href="{{ route('admin.list') }}">@lang('newsletter.lists.title')</a></li>
                             <li>
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    Subscribers <span class="caret"></span>
+                                    @lang('newsletter.subscribers.title') <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ route('admin.subscriber') }}">Subscriber List</a></li>
-                                    <li><a href="{{ route('admin.subscriber.create') }}">Create New Subscriber</a></li>
+                                    <li><a href="{{ route('admin.subscriber') }}">@lang('newsletter.subscribers.list')</a></li>
+                                    <li><a href="{{ route('admin.subscriber.create') }}">@lang('newsletter.subscribers.create')</a></li>
                                 </ul>
                             </li>
                             <li>
