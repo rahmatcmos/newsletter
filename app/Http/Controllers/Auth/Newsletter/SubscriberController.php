@@ -31,9 +31,7 @@ class SubscriberController extends Controller
             $list = NewsletterList::whereSlug($listSlug)->first();
         }
 
-        $subscribers = NewsletterSubscriber::when(request('query'), function ($query) {
-            return $query->search(request('query'));
-        })
+        $subscribers = NewsletterSubscriber::search(request('query'))
             ->paginate(20);
 
         $subscribers->load('list', 'list.user');
