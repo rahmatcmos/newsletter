@@ -60,8 +60,8 @@ return [
         'string'  => 'The :attribute must be at least :min characters.',
         'array'   => 'The :attribute must have at least :min items.',
     ],
-    'not_in'               => 'The selected :attribute is invalid.',
-    'numeric'              => 'The :attribute must be a number.',
+    'not_in'               => 'Nilai :attribute tidak tersedia dalam basisdata.',
+    'numeric'              => ':attribute harus merupakan sebuah angka.',
     'present'              => 'The :attribute field must be present.',
     'regex'                => 'The :attribute format is invalid.',
     'required'             => ':attribute harus diisi.',
@@ -82,7 +82,7 @@ return [
     'timezone'             => 'The :attribute must be a valid zone.',
     'unique'               => ':attribute sudah digunakan.',
     'uploaded'             => 'The :attribute failed to upload.',
-    'url'                  => 'The :attribute format is invalid.',
+    'url'                  => 'Format :attribute tidak valid.',
 
     /*
     |--------------------------------------------------------------------------
@@ -113,11 +113,12 @@ return [
      */
 
     'attributes'           => [
-        'name'    => 'Nama lengkap',
-        'email'   => 'Alamat Surel',
-        'subject' => 'Subjek',
-        'message' => 'Pesan',
-        'file'    => 'Berkas',
+        'name'        => 'Nama lengkap',
+        'email'       => 'Alamat Surel',
+        'subject'     => 'Subjek',
+        'message'     => 'Pesan',
+        'file'        => 'Berkas',
+        'description' => 'Deskripsi',
     ],
 
 ];

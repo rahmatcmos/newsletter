@@ -16,11 +16,13 @@
                             <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
                             <span class="help-block">{{ $errors->first('name') }}</span>
                         </div>
+
                         <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
                             <label for="email" class="control-label">@lang('newsletter.subscribers.form.email')</label>
                             <input type="email" name="email" value="{{ old('email') }}" class="form-control" required>
                             <span class="help-block">{{ $errors->first('email') }}</span>
                         </div>
+
                         <div class="form-group {{ $errors->has('list') ? 'has-error' : '' }}">
                             <label for="list" class="control-label">@lang('newsletter.subscribers.form.list')</label>
                             <select name="list" id="list" class="form-control" required></select>

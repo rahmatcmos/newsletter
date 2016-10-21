@@ -91,6 +91,34 @@ return [
     ],
 
     'lists'       => [
-        'title' => 'Daftar (Grup)',
+        'title'   => 'Daftar (Grup)',
+        'edit'    => 'Ubah :name',
+        'yes'     => 'Ya',
+        'no'      => 'Tidak',
+        'create'  => 'Tambah Daftar',
+        'form'    => [
+            'user'        => 'Pengguna',
+            'name'        => 'Nama',
+            'description' => 'Deskripsi',
+            'totalSubs'   => 'Total Pelanggan',
+            'primary'     => 'Utama',
+            'createDate'  => 'Tanggal Dibuat',
+            'action'      => 'Aksi',
+        ],
+        'button'  => [
+            'close'  => 'Tutup',
+            'create' => 'Tambah Baru',
+            'save'   => 'Simpan',
+            'delete' => 'Hapus',
+        ];
+        'message' => [
+            'created' => 'Daftar baru dengan nama :name berhasil dibuat.',
+            'deleted' => 'Daftar berhasil dihapus.',
+        ],
+        'log'     => [
+            'create' => 'Membuat daftar baru',
+            'edit'   => 'Mengubah daftar',
+            'delete' => 'Menhapus daftar',
+        ],
     ],
 ];

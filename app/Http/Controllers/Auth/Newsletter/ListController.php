@@ -7,6 +7,7 @@ use App\Http\Requests\Newsletter\CreateListRequest;
 use App\Http\Requests\Newsletter\EditListRequest;
 use App\NewsletterList;
 use Auth;
+use DB;
 
 /**
  * @author Yugo <dedy.yugo.purwanto@gmail.com>
@@ -44,7 +45,7 @@ class ListController extends Controller
         }
 
         return view('auth.newsletter.list.index', compact('lists'))
-            ->withTitle('Lists');
+            ->withTitle(trans('newsletter.lists.title'));
     }
 
     /**
@@ -56,21 +57,30 @@ class ListController extends Controller
      */
     public function postCreate(CreateListRequest $request)
     {
-        $list = new NewsletterList();
-        $list->user_id = Auth::id();
-        $list->slug = str_slug($request->name);
-        $list->name = $request->name;
-        $list->description = $request->description;
-        $list->is_default = false;
-        $saved = $list->save();
+        $transaction = DB::transaction(function () use ($request) {
 
-        if ($saved === true) {
+            $list = new NewsletterList();
+            $list->user_id = Auth::id();
+            $list->slug = str_slug($request->name);
+            $list->name = $request->name;
+            $list->description = $request->description;
+            $list->is_default = false;
+            $saved = $list->save();
+
             activity()->performedOn($list)
-                ->log(sprintf('Created list %s.', $list->name));
+                ->withProperties([
+                    'id'   => $list->id,
+                    'name' => $list->name,
+                ])
+                ->log('newsletter.lists.log.create');
 
+            return $saved;
+        });
+
+        if ($transaction === true) {
             return redirect()
                 ->route('admin.list')
-                ->with('success', sprintf('New list named %s has been created.', $list->name));
+                ->withSuccess(trans('newsletter.lists.message.created', ['name' => $list->name]));
         }
 
         return redirect()->back();
@@ -92,7 +102,7 @@ class ListController extends Controller
             ->firstOrFail();
 
         return view('auth.newsletter.list.edit', compact('list'))
-            ->withTitle(sprintf('Edit %s', $list->name));
+            ->withTitle(trans('newsletter.lists.edit', ['name' => $list->name]));
     }
 
     /**
@@ -104,22 +114,30 @@ class ListController extends Controller
      */
     public function postEdit(EditListRequest $request)
     {
-        $list = NewsletterList::when(Auth::user()->group === 'user', function ($query) {
-            return $query->whereUserId(Auth::id());
-        })
-            ->whereId($request->id)
-            ->firstOrFail();
+        $transaction = DB::transaction(function () use ($request) {
+            $list = NewsletterList::when(Auth::user()->group === 'user', function ($query) {
+                return $query->whereUserId(Auth::id());
+            })
+                ->whereId($request->id)
+                ->firstOrFail();
 
-        $list->name = $request->name;
-        $list->description = $request->description;
+            $list->name = $request->name;
+            $list->description = $request->description;
+            $saved = $list->save();
 
-        if ($list->save() === true) {
             activity()->performedOn($list)
-                ->log(sprintf('Updated lists %s.', $list->name));
+                ->withProperties([
+                    'id'   => $list->id,
+                    'name' => $list->name,
+                ])
+                ->log('newsletter.lists.log.edit');
 
+        });
+
+        if ($transaction === true) {
             return redirect()
                 ->route('admin.list')
-                ->with('success', sprintf('List %s has been updated.', $list->name));
+                ->withSuccess(trans('newsletter.lists.message.edited', ['name' => $list->name]));
         }
 
         // come for no reason
@@ -141,14 +159,25 @@ class ListController extends Controller
             ->whereId($id)
             ->firstOrFail();
 
-        $listName = $list->name;
+        $transaction = DB::transaction(function () use ($list) {
+            $listProperties = [
+                'id'   => $list->id,
+                'name' => $list->name,
+            ];
 
-        if ($list->delete() === true) {
-            activity()->log(sprintf('Deleted list %s.', $listName));
+            $deleted = $list->delete();
 
+            activity()->performedOn($list)
+                ->withProperties($listProperties)
+                ->log('newsletter.lists.log.delete');
+
+            return $deleted;
+        });
+
+        if ($transaction === true) {
             return redirect()
                 ->route('admin.list')
-                ->with('success', 'List has been deleted.');
+                ->withSuccess('newsletter.lists.message.deleted');
         }
 
         // come for no reason

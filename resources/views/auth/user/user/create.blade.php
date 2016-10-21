@@ -24,6 +24,8 @@
                             <span class="help-block">{{ $errors->first('email') }}</span>
                         </div>
 
+
+
                         <div class="form-group {{ $errors->has('group') ? 'has-error' : '' }}">
                             <label for="group" class="control-label">@lang('user.form.group')</label>
                             <select name="group" id="user-group" class="form-control">
